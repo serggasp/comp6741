@@ -1,6 +1,14 @@
 image:
   file: .gitpod.Dockerfile
 
+tasks:
+  - name: LaTeX auto-rebuild
+    command: >
+      while find . -name '*.tex' | xargs inotifywait -qqre modify .; do \
+        latexmk -pdf ; \
+      done
+  - name: Terminal
+
 # # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 # tasks:
 #   - init: echo 'init script' # runs during prebuild
