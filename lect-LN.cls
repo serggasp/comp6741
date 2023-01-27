@@ -1,6 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{lect-LN}[lecture notes]
 
+\LoadClass[svgnames]{article}
 \RequirePackage{beamerarticle}
 \RequirePackage[margin=2cm]{geometry}
 
@@ -104,8 +105,6 @@
 		\end{boxedminipage}
 	\end{center}
 }
-
-\LoadClass[svgnames]{article}
 
 \newcommand{\slides}[1]{}
 \newcommand{\lecturenotes}[1]{#1}
