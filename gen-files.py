@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 chapters = [
     "01-intro",
     "02-np",
