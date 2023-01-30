@@ -1,0 +1,503 @@
+%!TEX root = 03-kernel-SL.tex
+
+\newcommand{\vcpre}{\textsf{VC-preprocess}\xspace}
+
+\begin{document}
+
+\title[Kernelization]
+{Kernelization}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\lecturenotes{\maketitle}
+
+\begin{frame}
+	\slides{\frametitle{Outline}}
+	\tableofcontents
+\end{frame}
+
+
+\section{Vertex Cover}
+
+\begin{frame}
+	\slides{\frametitle{Vertex cover}}
+
+	A \alert{vertex cover} of a graph $G=(V,E)$ is a subset of vertices $S\subseteq V$ such that
+	%each edge of the graph is incident to at least one vertex from $S$, i.e.,
+	for each edge $\{u,v\}\in E$, we have $u\in S$ or $v\in S$.
+
+	\pbDef{\VC}{A graph $G=(V,E)$ and an integer $k$}{$k$}{Does $G$ have a \vc of size at most $k$?}
+
+	%Example: $\{b,c,e\}$ is a vertex cover for this graph $H$
+	\begin{center}
+		\begin{tikzpicture}
+			\node[vertex, label=above:$a$]   (a) at (0.5,1.5) {};
+			\node[selected, label=above:$b$]   (b) at (0,  1) {};
+			\node[selected, label=above:$c$]   (c) at (1,  1) {};
+			\node[vertex, label=left:$d$]   (d) at (0,  0) {};
+			\node[selected, label=right:$e$]   (e) at (1,  0) {};
+
+			\draw[thick] (d)--(c)--(a)--(b)--(c)--(e)--(b)--(d)--(e);
+		\end{tikzpicture}
+	\end{center}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Exercise 1}
+
+	\begin{center}
+		\begin{tikzpicture}[scale=2]
+			\node[vertex, label=above:$a$]   (a) at (1,2) {};
+			\node[vertex, label=above:$b$]   (b) at (0,1) {};
+			\node[vertex, label=left:$c$]    (c) at (1,1) {};
+			\node[vertex, label=right:$d$]   (d) at (2,1) {};
+			\node[vertex, label=above:$e$]   (e) at (0,0) {};
+			\node[vertex, label=left:$f$]    (f) at (1,0) {};
+			\node[vertex, label=right:$g$]   (g) at (2,0) {};
+
+			\draw[thick] (b)--(a)--(c)--(d)--(a)--(g)--(d)--(f)--(c)--(g)--(f);
+
+			\node at (3,1) {$k=4$};
+		\end{tikzpicture}
+	\end{center}
+	Is this a \Yes-instance for \VC?\\
+	(Is there $S\subseteq V$ with $|S|\le 4$, such that $\forall\ uv\in E$, $u\in S$ or $v\in S$?)
+\end{frame}
+
+\begin{frame}
+	\frametitle{Exercise 2}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\node[vertex, label=above:$a$]   (a) at (0,7) {};
+			\node[vertex, label=above:$b$]   (b) at (2,7) {};
+			\node[vertex, label=above:$c$]    (c) at (4,7) {};
+			\node[vertex, label=left:$d$]   (d) at (0,6) {};
+			\node[vertex, label=above:$e$]   (e) at (2,6) {};
+			\node[vertex, label=left:$f$]    (f) at (0,5) {};
+			\node[vertex, label=above right:$g$]   (g) at (2,5) {};
+			\node[vertex, label=right:$h$]   (h) at (4,5) {};
+			\node[vertex, label=right:$i$]   (i) at (2,4) {};
+			\node[vertex, label=left:$j$]    (j) at (1,3) {};
+			\node[vertex, label=right:$k$]   (k) at (3,3) {};
+			\node[vertex, label=left:$l$]   (l) at (2,2) {};
+			\node[vertex, label=left:$m$]    (m) at (2,1) {};
+			\node[vertex, label=below:$n$]   (n) at (2,0) {};
+
+			\draw[thick] (a)--(d)--(e)--(f)--(d) (h)--(e)--(g)--(h) (f)--(g)--(i)--(f) (n)--(k) (h)--(i)--(k)--(h) (f)--(j)--(i) (j)--(k)--(l)--(j)--(n)--(m)--(l);
+
+			\draw[thick] (e) .. controls +(5,0) and +(3,1) .. (n);
+			\draw[thick] (l) .. controls +(0.2,-1) .. (n);
+			\draw[thick] (f) .. controls +(0.5,-2.5) .. (n);
+			\draw[thick] (h) .. controls +(-0.5,-2.5) .. (n);
+			\draw[thick] (f) .. controls +(1.2,-1) .. (k);
+
+			\node at (6,3.5) {$k=7$};
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+
+
+\subsection{Simplification rules}
+
+\begin{frame}
+	\slides{\frametitle{Simplification rules for \VC}}
+	\only<1-3>{
+		\begin{block}{(Degree-0)}
+			If $\exists v\in V$ such that $d_G(v)=0$, then set $G \leftarrow G-v$.
+			%\only<1>{ \footnote[frame]{Notation: $N_G(v) = \{u: \{u,v\}\in E\}$; $N_G[v] = N_G(v)\cup\{v\}$; $d_G(v) = |N_G(v)|$.} \footnote[frame]{For a graph $G=(V,E)$ and a set $S\subseteq V$, the graph $G\setminus S$ is the graph $G[V\setminus S]=(V\setminus S, \{\{u,v\}\in E: u,v\in V\setminus S\})$}}
+		\end{block}
+
+		\uncover<2-3>{
+			\noindent
+			\textbf{Proving correctness.} A simplification rule is \alert{sound} if for every instance, it produces an equivalent instance.
+			Two instances $I,I'$ are \alert{equivalent} if they are both \Yes-instances or they are both \No-instances.
+
+			\begin{lemma}
+				(Degree-0) is sound.
+			\end{lemma}
+		}
+		\uncover<3>{
+			\begin{proof}
+				First, suppose $(G-v,k)$ is a \Yes-instance.
+				Let $S$ be a vertex cover for $G-v$ of size at most $k$.
+				Then, $S$ is also a vertex cover for $G$ since no edge of $G$ is incident to $v$.
+				Thus, $(G,k)$ is a \Yes-instance.
+
+				Now, suppose $(G-v,k)$ is a \No-instance.
+				For the sake of contradiction, assume $(G,k)$ is a \Yes-instance.
+				Let $S$ be a vertex cover for $G$ of size at most $k$.
+				But then, $S\setminus \{v\}$ is a vertex cover of size at most $k$ for $G-v$; a contradiction. % contradicting the fact that $(G-v,k)$ is a \No-instance.
+			\end{proof}
+		}}
+	\only<4-5>{
+		\begin{block}{(Degree-1)}
+			If $\exists v\in V$ such that $d_G(v)=1$, then set $G\leftarrow G- N_G[v]$ and $k\leftarrow k-1$.
+		\end{block}
+
+		\uncover<5>{
+			\begin{lemma}
+				(Degree-1) is sound.
+			\end{lemma}
+			\begin{proof}
+				Let $u$ be the neighbor of $v$ in $G$.
+				Thus, $N_G[v] = \{u,v\}$.
+
+				If $S$ is a \vc of $G$ of size at most $k$, then $S\setminus \{u,v\}$ is a \vc of $G- N_G[v]$ of size at most $k-1$, because $u\in S$ or $v\in S$.\\
+				If $S'$ is a \vc of $G- N_G[v]$ of size at most $k-1$, then $S'\cup \{u\}$ is a \vc of $G$ of size at most $k$, since all edges that are in $G$ but not in $G- N_G[v]$ are incident to $u$.
+			\end{proof}
+		}}
+	\only<6-7>{
+		\begin{block}{(Large Degree)}
+			If $\exists v\in V$ such that $d_G(v)>k$, then set $G\leftarrow G- v$ and $k\leftarrow k-1$.
+		\end{block}
+
+		\uncover<7>{
+			\begin{lemma}
+				(Large Degree) is sound.
+			\end{lemma}
+			\begin{proof}
+				Let $S$ be a \vc of $G$ of size at most $k$.
+				If $v\notin S$, then $N_G(v)\subseteq S$, contradicting that $|S|\le k$.
+			\end{proof}
+		}}
+	\only<8-9>{
+		\begin{block}{(Number of Edges)}
+			If $d_G(v)\le k$ for each $v\in V$ and $|E|>k^2$ then return \No
+		\end{block}
+
+		\uncover<9>{
+			\begin{lemma}
+				(Number of Edges) is sound.
+			\end{lemma}
+			\begin{proof}
+				Assume $d_G(v)\le k$ for each $v\in V$ and
+				$|E|>k^2$.\\
+				Suppose $S\subseteq V$, $|S|\le k$, is a \vc of $G$.\\
+				We have that $S$ covers at most $k^2$ edges.\\
+				However, $|E|\ge k^2+1$.\\
+				Thus, $S$ is not a \vc of $G$.
+			\end{proof}
+		}}
+\end{frame}
+
+\subsection{Preprocessing algorithm}
+
+
+\begin{frame}
+	\slides{\frametitle{Preprocessing algorithm for \VC}}
+
+
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		{\vcpre}
+
+		\KwIn{A graph $G$ and an integer $k$.}
+		\KwOut{A graph $G'$ and an integer $k'$ such that $G$ has a \vc of size at most $k$ if and only if $G'$ has a \vc of size at most $k'$.}
+		\SetKwComment{LabRule}{}{}
+		\BlankLine
+		%\Indp
+		$G'\leftarrow G$\;
+		$k'\leftarrow k$\;
+		\Repeat{no simplification rule applies}{
+			Execute simplification rules (Degree-0), (Degree-1), (Large Degree), and (Number of Edges)
+			for $(G',k')$
+		}
+		\Return $(G',k')$
+	\end{algorithm}
+
+\end{frame}
+
+
+\begin{frame}{Effectiveness of preprocessing algorithms}
+
+	\begin{itemize}
+		\item How effective is \vcpre?
+		\item We would like to study preprocessing algorithms mathematically and quantify their effectiveness.
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{First try}
+
+	\begin{itemize}
+		\item Say that a preprocessing algorithm for a problem $\Pi$ is \alert{nice}
+		      if it runs in polynomial time and
+		      for each instance for $\Pi$, it returns an instance for $\Pi$ that is strictly smaller.
+		      \pause
+		\item $\rightarrow$ executing it a linear number of times reduces the instance to a single bit
+		\item $\rightarrow$ such an algorithm would solve $\Pi$ in polynomial time
+		\item For \NP-hard problems this is not possible unless $\P = \NP$
+		\item We need a different measure of effectiveness
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Measuring the effectiveness of preprocessing algorithms}
+	\begin{itemize}
+		\item We will measure the effectiveness in terms of the \alert{parameter}
+		\item How large is the resulting instance in terms of the parameter?
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Effectiveness of \vcpre}
+	\begin{lemma}
+		For any instance $(G,k)$ for \VC, \vcpre produces an equivalent instance $(G',k')$ of size $O(k^2)$.
+	\end{lemma}
+	\begin{proof}
+		Since all simplification rules are sound, $(G=(V,E),k)$ and $(G'=(V',E'),k')$ are equivalent.\\
+		By (Number of Edges), $|E'|\le (k')^2 \le k^2$.\\
+		By (Degree-0) and (Degree-1), each vertex in $V'$ has degree at least 2 in $G'$.\\
+		Since $\sum_{v\in V'} d_{G'}(v) = 2 |E'| \le 2k^2$, this implies that $|V'|\le k^2$.\\
+		Thus, $|V'|+|E'| \subseteq O(k^2)$.
+	\end{proof}
+\end{frame}
+
+\section{Kernelization algorithms}
+
+\begin{frame}{Kernelization: definition}
+
+	\begin{definition}
+		A \alert{kernelization} for a parameterized problem $\Pi$ is a
+		\textbf{polynomial time} algorithm, which, for any instance $I$ of $\Pi$ with parameter $k$,
+		produces an \textbf{equivalent} instance $I'$ of $\Pi$ with parameter $k'$ such that
+		$|I'| \le f(k)$ and $k'\le f(k)$ for a computable function $f$.\\
+		We refer to the function $f$ as the \alert{size} of the kernel.
+	\end{definition}
+
+	\noindent
+	\textbf{Note}: We do not formally require that $k'\le k$, but this will be the case for many kernelizations.
+
+\end{frame}
+
+
+\begin{frame}{\vcpre is a quadratic kernelization}
+	\begin{theorem}
+		\vcpre is a $O(k^2)$ kernelization for \VC.
+	\end{theorem}
+
+\end{frame}
+
+\section{Kernel for \HC}
+
+\begin{frame}[allowframebreaks]
+	\slides{\frametitle{\HC}}
+
+	\noindent
+	A \alert{Hamiltonian cycle} of $G$ is a subgraph of $G$ that is a cycle on $|V(G)|$ vertices.
+
+	\pbDef{\textsf{vc}-\HC}{A graph $G=(V,E)$.}{$k=vc(G)$, the size of a smallest \vc of $G$.}{Does $G$ have a Hamiltonian cycle?}
+
+	\noindent
+	\textbf{Thought experiment}: Imagine a very large instance where the parameter is tiny. How can you simplify such an instance?
+
+	\framebreak
+	\noindent
+	\textbf{Issue}: We do not actually know a \vc of size $k$.\\We do not even know the value of $k$ (it is not part of the input).
+
+	\framebreak
+
+	\begin{itemize}
+		\item Obtain a vertex cover using an approximation algorithm. We will use a 2-approximation algorithm, producing a vertex cover of size $\le 2k$ in polynomial time.
+		\item If $C$ is a \vc of size $\le 2k$, then $I = V\setminus C$ is an independent set of size $\ge |V|-2k$.
+		\item No two consecutive vertices in the Hamiltonian Cycle can be in $I$.
+		\item A kernel with $\le 4k$ vertices can now be obtained with the following simplification rule.
+	\end{itemize}
+
+	\begin{block}{(Too-large)}
+		Compute a vertex cover $C$ of size $\le 2k$ in polynomial time.\\
+		If $2|C|<|V|$, then return \No
+	\end{block}
+
+\end{frame}
+
+
+\section{Kernel for \ECC}
+
+\begin{frame}
+	\slides{\frametitle{\ECC}}
+
+	\only<1>{
+		\begin{definition}
+			An \alert{\ecc} of a graph $G=(V,E)$ is a set of cliques in $G$ covering all its edges.\\
+			In other words, if $\mathcal{C}\subseteq 2^V$ is an \ecc then each $S\in \mathcal{C}$ is a clique in $G$ and for each $\{u,v\} \in E$ there exists an $S\in \mathcal{C}$ such that $u,v\in S$.
+		\end{definition}
+
+		\noindent
+		Example: $\{\textcolor{Green}{\{a,b,c\}},\textcolor{Blue}{\{b,c,d,e\}}\}$ is an \ecc for this graph.
+		\begin{center}
+			\begin{tikzpicture}
+				\node[vertex, label=above:$a$]   (a) at (0.5,1.5) {};
+				\node[vertex, label=above:$b$]   (b) at (0,  1) {};
+				\node[vertex, label=above:$c$]   (c) at (1,  1) {};
+				\node[vertex, label=left:$d$]   (d) at (0,  0) {};
+				\node[vertex, label=right:$e$]   (e) at (1,  0) {};
+
+				\draw[thick] (d)--(c)--(a)--(b)--(c)--(e)--(b)--(d)--(e);
+				\draw[thick,Green,rounded corners=5mm] (0.5,2.3)--(1.7,0.7)--(-0.7,0.7)--cycle;
+				\draw[thick,Blue,rounded corners=5mm] (1.6,-0.3)--(-0.6,-0.3)--(-0.6,1.3)--(1.6,1.3)--cycle;
+			\end{tikzpicture}
+		\end{center}
+	}
+
+	\only<2>{
+		\pbDef{\ECC}{A graph $G=(V,E)$ and an integer $k$}{$k$}{Does $G$ have an \ecc of size at most $k$?}
+		The \alert{size} of an edge clique cover $\mathcal{C}$ is the number of cliques contained in $\mathcal{C}$ and is denoted $|\mathcal{C}|$.
+	}
+\end{frame}
+
+
+\begin{frame}{Helpful properties}
+
+	\begin{definition}
+		A clique $S$ in a graph $G$ is a \alert{maximal} clique if there is no other clique $S'$ in $G$ with $S\subset S'$.
+	\end{definition}
+
+	\begin{lemma}\label{lem:maximalclique}
+		A graph $G$ has an \ecc $\mathcal{C}$ of size at most $k$ if and only if $G$ has an \ecc $\mathcal{C}'$ of size at most $k$ such that each $S\in \mathcal{C}'$ is a maximal clique.
+	\end{lemma}
+	\begin{proof}[Proof sketch]
+		$(\Rightarrow)$: Replace each clique $S\in \mathcal{C}$ by a maximal clique $S'$ with $S\subseteq S'$.
+
+		$(\Leftarrow)$: Trivial, since $\mathcal{C}'$ is an \ecc of size at most $k$.
+	\end{proof}
+
+\end{frame}
+
+
+
+\begin{frame}{Simplification rules for \ECC}
+
+	\noindent
+	\textbf{Thought experiment}: Imagine a very large instance where the parameter is tiny. How can you simplify such an instance?
+
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Simplification rules for \ECC\ II}}
+	\noindent
+	The instance could have many degree-0 vertices.
+
+	\begin{block}{(Isolated)}
+		If there exists a vertex $v\in V$ with $d_G(v)=0$, then set $G\leftarrow G-v$.
+	\end{block}
+
+	\begin{lemma}
+		(Isolated) is sound.
+	\end{lemma}
+	\begin{proof}[Proof sketch]
+		Since no edge is incident to $v$, a smallest \ecc\ for $G-v$ is a smallest \ecc\ for $G$, and vice-versa.
+	\end{proof}
+
+	\pause
+
+	\begin{block}{(Isolated-Edge)}
+		If $\exists uv\in E$ such that $d_G(u)=d_G(v)=1$, then set $G\leftarrow G-\{u,v\}$ and $k\leftarrow k-1$.
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Simplification rules for \ECC\ III}}
+
+	\begin{block}{(Twins)}
+		If $\exists u,v\in V$, $u\ne v$, such that $N_G[u]=N_G[v]$, then set $G\leftarrow G-v$.
+	\end{block}
+
+	\begin{lemma}
+		(Twins) is sound.
+	\end{lemma}
+	\pause
+	\begin{proof}
+		We need to show that $G$ has an \ecc of size at most $k$ if and only if $G-v$ has an \ecc of size at most $k$.
+
+		$(\Rightarrow)$: If $\mathcal{C}$ is an \ecc of $G$ of size at most $k$, then $\{S\setminus \{v\} : S\in \mathcal{C}\}$ is an \ecc of $G-v$ of size at most $k$.
+
+		$(\Leftarrow)$: Let $\mathcal{C}'$ be an \ecc of $G-v$ of size at most $k$. Partition $\mathcal{C}'$ into $\mathcal{C}'_u = \{S\in \mathcal{C}': u\in S\}$ and $\mathcal{C}'_{\neg u} = \mathcal{C}' \setminus \mathcal{C}'_u$. Note that each set in $\mathcal{C}_{u}=\{S\cup \{v\} : S\in \mathcal{C}'_u\}$ is a clique in $G$ since $N_G[u]=N_G[v]$ and that each edge incident to $v$ is contained in at least one of these cliques. Now, $\mathcal{C}_{u} \cup \mathcal{C}'_{\neg u}$ is an \ecc of $G$ of size at most $k$.
+	\end{proof}
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Simplification rules for \ECC\ IV}}
+
+	\begin{block}{(Size-V)}
+		If the previous simplification rules do not apply and $|V|>2^k$, then return \No.
+	\end{block}
+
+	\begin{lemma}
+		(Size-V) is sound.
+	\end{lemma}
+	\pause
+	\begin{proof}
+		For the sake of contradiction, assume neither (Isolated) nor (Twins) are applicable, $|V|>2^k$, and $G$ has
+		an \ecc $\mathcal{C}$ of size at most $k$. Since $2^{\mathcal{C}}$ (the set of all subsets of $\mathcal{C}$) has
+		size at most $2^k$, and every vertex belongs to at least one clique in $\mathcal{C}$ by (Isolated), we have that there exists two vertices $u,v\in V$ such that $\{S\in \mathcal{C} : u\in S\} = \{S\in \mathcal{C} : v\in S\}$. But then,
+		$N_G[u]= \bigcup_{S\in \mathcal{C} : u\in S} S = \bigcup_{S\in \mathcal{C} : v\in S} S = N_G[v]$, contradicting that (Twin) is not applicable.
+	\end{proof}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Kernel for \ECC}
+
+	\begin{theorem}[\cite{GrammGHN08}]
+		\ECC\ has a kernel with $O(2^k)$ vertices and $O(4^k)$ edges.
+	\end{theorem}
+
+	\begin{corollary}
+		\ECC\ is \FPT.
+	\end{corollary}
+
+\end{frame}
+
+\section{Kernels and Fixed-parameter tractability}
+
+\begin{frame}
+	\slides{\frametitle{Kernels and Fixed-parameter tractability}}
+
+	\begin{theorem}
+		Let $\Pi$ be a decidable parameterized problem.\\
+		$\Pi$ has a kernelization algorithm $\Leftrightarrow$ $\Pi$ is \FPT.
+	\end{theorem}
+	\pause
+	\begin{proof}
+		$(\Rightarrow)$: An \FPT\ algorithm is obtained by first running the kernelization, and then any brute-force algorithm on the resulting instance.
+
+		$(\Leftarrow)$: Let $A$ be an \FPT\ algorithm for $\Pi$ with running time $O(f(k) n^c)$.\\
+		If $f(k)<n$, then $A$ has running time $O(n^{c+1})$. In this case, the kernelization algorithm runs $A$ and returns a trivial \Yes- or \No-instance depending on the answer of $A$.\\
+		Otherwise, $f(k)\ge n$. In this case, the kernelization algorithm outputs the input instance.
+	\end{proof}
+
+\end{frame}
+
+
+
+\section{Further Reading}
+
+\begin{frame}
+	\slides{\frametitle{Further Reading}}
+
+	\begin{itemize}
+		\item Chapter 2, \emph{Kernelization} in \cite{CyganFKL+15}
+		\item Chapter 4, \emph{Kernelization} in \cite{DowneyF13}
+		\item Chapter 7, \emph{Data Reduction and Problem Kernels} in \cite{Niedermeier06}
+		\item Chapter 9, \emph{Kernelization and Linear Programming Techniques} in \cite{FlumG06}
+		\item the kernelization book \cite{FominLSZ19}
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+\end{document}

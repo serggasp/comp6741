@@ -6,7 +6,7 @@ tasks:
   - name: LaTeX auto-rebuild
     command: >
       while find . -name '*.tex' | xargs inotifywait -qqre modify .; do \
-        latexmk -pdf ; \
+        latexmk -r ./latexmkrc ; \
       done
   - name: Terminal
 

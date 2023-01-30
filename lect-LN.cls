@@ -1,7 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{lect-LN}[lecture notes]
 
-\LoadClass[svgnames]{article}
+\LoadClass{article}
+\RequirePackage[svgnames]{xcolor}
 \RequirePackage{beamerarticle}
 \RequirePackage[margin=2cm]{geometry}
 
