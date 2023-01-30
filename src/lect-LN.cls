@@ -6,7 +6,7 @@
 \RequirePackage{beamerarticle}
 \RequirePackage[margin=2cm]{geometry}
 
-\RequirePackage{lect-main}
+\RequirePackage{../src/lect-main}
 
 \tikzstyle{selected}=[minimum size=3mm,inner sep=0mm,draw,line width=1.5pt,path picture={% 
 		\draw[red,fill=red] circle (1mm);

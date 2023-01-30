@@ -1,0 +1,4 @@
+{
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": true
+}

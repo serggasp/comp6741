@@ -6,7 +6,7 @@
 \usetheme[right,width=50pt]{Madrid}
 \usefonttheme[onlymath]{serif}
 
-\RequirePackage{lect-main}
+\RequirePackage{../src/lect-main}
 
 \tikzstyle{selected}=[minimum size=2mm,circle,fill=red,inner sep=0mm,draw,red]
 \newcommand{\fn}[1]{\footnote[frame]{#1}}

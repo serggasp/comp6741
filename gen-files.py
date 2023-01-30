@@ -5,10 +5,10 @@ chapters = [
 ]
 
 for c in chapters:
-    f = open(f'{c}-SL.tex', "w")
-    f.write("\documentclass{lect-SL}\n\input{"+c+"}\n")
+    f = open(f'./out/{c}-SL.tex', "w")
+    f.write("\documentclass{../src/lect-SL}\n\input{../src/"+c+"}\n")
     f.close()
 
-    f = open(f'{c}-LN.tex', "w")
-    f.write("\documentclass{lect-LN}\n\input{"+c+"}\n")
+    f = open(f'./out/{c}-LN.tex', "w")
+    f.write("\documentclass{../src/lect-LN}\n\input{../src/"+c+"}\n")
     f.close()
