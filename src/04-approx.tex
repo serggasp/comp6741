@@ -1,0 +1,574 @@
+%!TEX root = ../out/04-approx-SL.tex
+
+
+\newcommand{\vcpre}{\textsf{VC-preprocess}\xspace}
+
+
+\begin{document}
+
+\title[Approximation]
+{Approximation Algorithms}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\lecturenotes{\maketitle}
+
+\begin{frame}
+ \slides{\frametitle{Outline}}
+ \tableofcontents
+\end{frame}
+
+
+\section{Approximation Algorithms}
+
+\begin{frame}
+	\frametitle{Optimisation problems}
+	
+	\begin{definition}
+		An \alert{optimisation problem} is characterised by
+		\begin{itemize}
+			\item a set of input instances
+			\item a set of \alert{feasible solutions} for each input instance
+			\item a \alert{value} for each feasible solution
+		\end{itemize}
+		In a \alert{maximisation} problem (resp., a \alert{minimisation}) problem, the goal is to find a feasible solution with maximum (resp., minimum) value.
+	\end{definition}
+
+	\noindent \textbf{Example:}
+	In the \textsc{Vertex Cover} minimisation problem, the input is a graph $G$, the feasible solutions are all the vertex covers of $G$, and the value of a vertex cover is its size.
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Approximation algorithm}
+	
+	\begin{definition}
+		An \alert{approximation algorithm} $A$ for an optimisation problem $\Pi$ is a polynomial time algorithm that returns a feasible solution.\\
+		Denote by $A(I)$ the value of the feasible solution returned by the approximation algorithm $A$ for an instance $I$ and by $\OPT(I)$ the value of the optimum solution.\\
+		If $\Pi$ is a minimisation problem, then the \alert{approximation ratio} of $A$ is $r$ if
+		\begin{align*}
+		 \frac{A(I)}{\OPT(I)} \le r \text{ for every instance $I$.}
+		\end{align*}
+		If $\Pi$ is a maximisation problem, then the \alert{approximation ratio} of $A$ is $r$ if
+		\begin{align*}
+		 \frac{\OPT(I)}{A(I)} \le r \text{ for every instance $I$.}
+		\end{align*}
+		We say that $A$ is an $r$-approximation algorithm if it has approximation ratio $r$.
+	\end{definition}
+\end{frame}
+
+\section{Multiway Cut}
+
+\begin{frame}{Problem Definition}
+
+\pbDefApprox{\textsc{Multiway Cut}}{A connected graph $G=(V,E)$ and a set of terminals $S=\{s_1, \dots, s_k\}$}{A multiway cut, i.e., an edge subset $X\subseteq E$ such that the graph $(V,E\setminus X)$ has no path between any two distinct terminals}{Minimize the size of the multiway cut.}
+
+ \begin{center}
+  \begin{tikzpicture}
+   \node[selected, label=right:$a$]   (a) at (1,3) {};
+   \node[vertex, label=left:$b$]   (b) at (1,  2) {};
+   \node[vertex, label=above:$c$]   (c) at (2,  2) {};
+   \node[selected, label=left:$d$]   (d) at (0,  1) {};
+   \node[selected, label=right:$e$]   (e) at (3,  1) {};
+   \node[vertex, label=below:$f$]   (f) at (1,  0) {};
+   \node[vertex, label=below:$g$]   (g) at (2,  0) {};
+   
+   \draw[thick] (a)--(b) (d)--(f) (g)--(e)--(c)--(g);
+   \draw[thick,dotted,red] (d)--(b)--(c) (f)--(g);
+  \end{tikzpicture}
+ \end{center}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Complexity}
+	
+	\textsc{Multiway Cut} is \NP-complete, even when $k=3$ \cite{DahlhausJPSZ94}.
+	
+	\textsc{Multiway Cut} can be solved in polynomial time when $k=2$ by a maximum flow algorithm.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Approximation algorithm}
+	
+	Algorithm Greedy-MC
+	\begin{itemize}
+		\item For each $i\in \{1,\dots,k\}$, compute a smallest edge set $C_i$, separating $s_i$ from the other terminals.\\
+			(This can be done by computing a smallest cut between $s_i$ and $s_{-i}$ in the graph obtained from $G$ by merging all the vertices in $S\setminus \{s_i\}$ into a new vertex $s_{-i}$.)
+		\item Return $\bigcup_{i\in \{1,\dots,k\}} C_i$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Approximation ratio}
+	
+	\begin{theorem}[\cite{DahlhausJPSZ94}]
+		Greedy-MC is a 2-approximation algorithm for \textsc{Multiway Cut}.
+	\end{theorem}
+	\begin{proof}
+	 First, note that the algorithm runs in polynomial time.\\
+	 To show that its approximation ratio is at most $2$, let us compare the size of the solution it returns, $C = \bigcup_{i\in \{1,\dots,k\}} C_i$, to the size of an optimal solution, $A$.\\
+	 The graph $(V,E\setminus A)$ has $k$ connected components $G_1, \dots, G_k$, one for each $s_1, \dots, s_k$.\\
+	 Let $A_i\subseteq A$ denote the edges with one endpoint in $G_i$. Observe that $A = \bigcup A_i$.\\
+	 Since each edge of $A$ is incident to two of the connected components, we have that
+	 \begin{align*}
+	 	 2\cdot |A| = \sum_{i=1}^k |A_i| \ge \sum_{i=1}^k |C_i| \ge |C|
+	 \end{align*}
+	 Since $|C|\le 2\cdot |A|$, Greedy-MC is a 2-approximation algorithm.
+	\end{proof}
+\end{frame}
+
+\section{Vertex Cover}
+
+\begin{frame}
+ \slides{\frametitle{Vertex cover}}
+
+  \noindent
+  \textbf{Recall:}
+  A \alert{vertex cover} of a graph $G=(V,E)$ is a subset of vertices $S\subseteq V$ such that %each edge of the graph is incident to at least one vertex from $S$, i.e.,
+  for each edge $\{u,v\}\in E$, we have $u\in S$ or $v\in S$.
+  
+  \pbDef{\VC}{A graph $G=(V,E)$ and an integer $k$}{$k$}{Does $G$ have a \vc of size at most $k$?}
+ 
+ %Example: $\{b,c,e\}$ is a vertex cover for this graph $H$
+ \begin{center}
+  \begin{tikzpicture}
+   \node[vertex, label=above:$a$]   (a) at (0.5,1.5) {};
+   \node[selected, label=above:$b$]   (b) at (0,  1) {};
+   \node[selected, label=above:$c$]   (c) at (1,  1) {};
+   \node[vertex, label=left:$d$]   (d) at (0,  0) {};
+   \node[selected, label=right:$e$]   (e) at (1,  0) {};
+   
+   \draw[thick] (d)--(c)--(a)--(b)--(c)--(e)--(b)--(d)--(e); 
+  \end{tikzpicture}
+ \end{center}
+
+\end{frame}
+
+\subsection{Preprocessing}
+
+\begin{frame}
+	\slides{\frametitle{Preprocessing algorithm for \VC}}
+	
+	\begin{algorithm}[H]
+		\DontPrintSemicolon
+		%\SetVlineSkip{0.44pt}
+		%\Indm
+		{\vcpre}
+		
+		\KwIn{A graph $G$ and an integer $k$.}
+		\KwOut{A graph $G'$ and an integer $k'$ such that $G$ has a \vc of size at most $k$ if and only if $G'$ has a \vc of size at most $k'$.}
+		\SetKwComment{LabRule}{}{}
+		\BlankLine
+		%\Indp
+		$G'\leftarrow G$\;
+		$k'\leftarrow k$\;
+		\Repeat{no simplification rule applies}{
+			Execute simplification rules (Degree-0), (Degree-1), (Large Degree), and (Number of Edges)
+			for $(G',k')$
+		}
+		\Return $(G',k')$
+	\end{algorithm}
+	
+	\medskip
+	\noindent
+	\textbf{Claim:} It is easy to add some bookkeeping to this preprocessing algorithm so that it outputs a set of $k-k'$ vertices such that any vertex cover $S'$ for $G'$ can be extended to a vertex cover for $G$ by adding these $k-k'$ vertices.
+\end{frame}
+
+\begin{frame}
+ \frametitle{Approximation algorithm for \VC}
+
+Since \vcpre returns an equivalent instance $(G',k')$ of size $O(k^2)$,
+we have that
+\begin{corollary}
+	The \textsc{Vertex Cover} optimisation problem has an approximation algorithm with approximation ratio $O(\OPT)$.
+\end{corollary}
+\begin{proof}[Proof sketch]
+	We start from $k=0$ and increment $k$ until a solution is returned
+	\begin{itemize}
+		\item For a given value of $k$, kernelize.\\
+		\item If (Number of Edges) does not return \No, then return a vertex cover containing all the vertices of the kernelized graph, along with the vertices determined by the bookkeeping of the kernelization procedure.
+	\end{itemize}
+	This procedure returns a vertex cover of size $O(\OPT^2)$.	
+\end{proof}
+Can we obtain a constant approximation ratio?
+\end{frame}
+
+
+\section{Another kernel / approximation algorithm for \VC}
+
+
+\begin{frame}{Integer Linear Program for \VC}
+
+ The \VC\ problem can be written as an Integer Linear Program (ILP).\\
+ For an instance $(G=(V,E),k)$ for \VC\ with $V = \{v_1,\dots,v_n\}$,
+ create a variable $x_i$ for each vertex $v_i$, $1\le i\le n$.\\
+ Let $X = \{x_1,\dots,x_n\}$.
+ 
+ \begin{center}
+  ILP$_{\text{VC}}(G)$=
+  \begin{boxedminipage}{0.79 \textwidth}
+   \begin{align*}
+     \text{Minimize} &\sum_{i=1}^n x_i\\
+     x_i + x_j &\ge 1 && \text{for each } \{v_i,v_j\}\in E\\
+     x_i &\in \{0,1\} && \text{for each } i \in \{1,\dots,n\}
+   \end{align*}
+  \end{boxedminipage}
+ \end{center}
+ 
+ Then, $(G,k)$ is a \Yes-instance iff the objective value of ILP$_{\text{VC}}(G)$ is at most $k$.
+ 
+ \medskip
+ \noindent \textbf{Note:} Since we just reduced the \NP-complete \VC\ problem to ILP, we conclude that ILP is \NP-hard.
+
+\end{frame}
+
+
+\begin{frame}{LP relaxation for \VC}
+
+ \begin{center}
+  LP$_{\text{VC}}(G)$=
+  \begin{boxedminipage}{0.79 \textwidth}
+   \begin{align*}
+     \text{Minimize} &\sum_{i=1}^n x_i\\
+     x_i + x_j &\ge 1 && \text{for each } \{v_i,v_j\}\in E\\
+     x_i &\ge 0 && \text{for each } i \in \{1,\dots,n\}
+   \end{align*}
+  \end{boxedminipage}
+ \end{center}
+ 
+ \noindent
+ \textbf{Note}: the value of an optimal solution for the Linear Program LP$_{\text{VC}}(G)$ is at most the value of an optimal solution for ILP$_{\text{VC}}(G)$
+
+ \medskip
+ \noindent
+\textbf{Note 2}: Linear Programs (LP) can be solved in polynomial time \cite{CohenLS19}.
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Properties of LP optimal solution}
+
+ \begin{itemize}
+  \item Let $\alpha: X\rightarrow \mathbb{R}_{\ge 0}$ be an optimal solution for LP$_{\text{VC}}(G)$.
+        Let
+ \begin{align*}
+  V_- &= \{v_i : \alpha(x_i) < 1/2\}\\
+  V_{1/2} &= \{v_i : \alpha(x_i) = 1/2\}\\
+  V_+ &= \{v_i : \alpha(x_i) > 1/2\}
+ \end{align*}
+ \end{itemize}
+
+ \pause
+ \begin{lemma}
+  For each $i, 1\le i\le n$, we have that $\alpha(x_i)\le 1$.
+ \end{lemma}
+ 
+ \begin{lemma}
+  $V_-$ is an independent set. %\footnote[frame]{A vertex set $S$ is \alert{independent} in a graph $G=(V,E)$ if $\{u,v\} \notin E$ for all $u,v\in S$.}
+ \end{lemma}
+
+ \begin{lemma}
+  $N_G(V_-)=V_+$. % There is no edge in $G$ with one endpoint in $V_-$ and the other endpoint in $V_{1/2}$.
+ \end{lemma}
+
+\end{frame}
+
+
+\begin{frame}
+ \slides{\frametitle{Properties of LP optimal solution II}}
+
+ \begin{lemma}
+  For each $S\subseteq V_+$ we have that $|S| \le |N_G(S) \cap V_-|$. %\footnote[frame]{Notation: $N_G(S) = \bigcup_{v\in S} N_G(v) \setminus S$; $N_G[S] = N_G(S) \cup S$.}
+ \end{lemma}
+ \begin{proof}
+  For the sake of contradiction, suppose there is a set $S\subseteq V_+$ such that $|S| > |N_G(S) \cap V_-|$.\\
+  Let $\epsilon = \min_{v_i\in S}\{\alpha(x_i)-1/2\}$ and $\alpha':X\rightarrow \mathbb{R}_{\ge 0}$ s.t.
+  \begin{align*}
+   \alpha'(x_i) = \begin{cases}
+                   \alpha(x_i) &\text{if } v_i \notin S\cup (N_G(S) \cap V_-)\\
+                   \alpha(x_i)-\epsilon &\text{if } v_i \in S\\
+                   \alpha(x_i)+\epsilon &\text{if } v_i \in N_G(S)\cap V_-
+                  \end{cases}
+  \end{align*}
+  Note that $\alpha'$ is an improved solution for LP$_{\text{VC}}(G)$, contradicting that $\alpha$ is optimal.
+ \end{proof}
+\end{frame}
+
+
+\begin{frame}
+ \slides{\frametitle{Properties of LP optimal solution III}}
+
+ \begin{theorem}[Hall's marriage theorem]
+  A bipartite graph $G=(V \uplus U,E)$ has a matching saturating $S\subseteq V$ \slides{\begin{align*}\Leftrightarrow\end{align*}}\lecturenotes{if and only if} for every subset $W\subseteq S$ we have $|W| \le |N_G(W)|$. \fn{A \alert{matching} $M$ in a graph $G$ is a set of edges such that no two edges in $M$ have a common endpoint. A matching \alert{saturates} a set of vertices $S$ if each vertex in $S$ is an end point of an edge in $M$.}
+ \end{theorem}
+ 
+ \pause
+ \medskip
+ \noindent
+ Consider the bipartite %\footnote[frame]{A graph is \alert{bipartite} if its vertex set can be partitioned into two independent sets.}
+ graph $B=(V_-\uplus V_+, \{\{u,v\} \in E : u\in V_-, v\in V_+\})$.
+ 
+ \begin{lemma}
+  There exists a matching $M$ in $B$ of size $|V_+|$.
+ \end{lemma}
+ \begin{proof}
+  The lemma follows from the previous lemma and Hall's marriage theorem.
+ \end{proof}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Crown Decomposition: Definition}
+
+ \begin{definition}[Crown Decomposition]
+  A crown decomposition $(C,H,B)$ of a graph $G=(V,E)$ is a partition of $V$ into sets $C,H$, and $B$ such that
+  \begin{itemize}
+   \item the crown $C$ is a non-empty independent set,
+   \item the head $H=N_G(C)$,
+   \item the body $B = V \setminus (C\cup H)$, and
+   \item there is a matching of size $|H|$ in $G[H \cup C]$.
+  \end{itemize}
+ \end{definition}
+ 
+ \noindent
+ By the previous lemmas, we obtain a crown decomposition $(V_-,V_+,V_{1/2})$ of $G$ if $V_- \ne \emptyset$.
+\end{frame}
+
+
+\begin{frame}{Crown Decomposition: Examples}
+
+\begin{center}
+ \begin{tikzpicture}[scale=1]
+
+   \draw (1,0) node[vertex,label=below:$a$] (v1) {};
+   \draw (0,1) node[vertex,label=left:$b$] (v2) {};
+   \draw (1,1) node[vertex,label=below:$c$] (v3) {};
+   \draw (2,1) node[vertex,label=right:$d$] (v4) {};
+   \draw (0,2) node[vertex,label=above:$e$] (v5) {};
+   \draw (1,2) node[vertex,label=above:$f$] (v6) {};
+   \draw (2,2) node[vertex,label=above:$g$] (v7) {};
+
+   \draw[very thick] (v3)--(v4)--(v1)--(v2)--(v3)--(v6)--(v4)--(v7)--(v6)--(v2)--(v5)--(v6);
+   
+   \node at (-1.5,-3) {};
+   \node<2> at (0.5,-2) {crown decomposition};
+   \node<2> at (0.5,-2.5) {$(\{a,e,g\},\{b,d,f\},\{c\})$};
+
+   \draw (5,0) node[vertex,label=below:$a$] (u1) {};
+   \draw (4,1) node[vertex,label=left:$b$] (u2) {};
+   \draw (5,1) node[vertex,label=315:$c$] (u3) {};
+   \draw (6,1) node[vertex,label=right:$d$] (u4) {};
+   \draw (5,2) node[vertex,label=above:$e$] (u5) {};
+
+   \draw[very thick] (u3)--(u4)--(u1)--(u2)--(u3)--(u1) (u2)--(u5)--(u4) (u5)--(u3);
+
+   \node at (8,-2.5) {};
+   \node<2> at (5.5,-2) {has no crown decomposition};
+ \end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Using the crown decomposition}
+ \begin{lemma}
+  Suppose that $G=(V,E)$ has a crown decomposition $(C,H,B)$. Then,
+  \begin{align*}
+   \text{vc}(G) \le k \quad\Leftrightarrow\quad \text{vc}(G[B]) \le k-|H|,
+  \end{align*}
+  where $\text{vc}(G)$ denotes the size of the smallest vertex cover of $G$.
+ \end{lemma}
+ \pause
+ \begin{proof}
+  $(\Rightarrow)$: Let $S$ be a \vc of $G$ with $|S|\le k$. Since $S$ contains at least one vertex for each edge of a matching, $|S \cap (C\cup H)| \ge |H|$. Therefore, $S\cap B$ is a vertex cover for $G[B]$ of size at most $k-|H|$.
+  
+  $(\Leftarrow)$: Let $S$ be a \vc of $G[B]$ with $|S|\le k-|H|$. Then, $S\cup H$ is a \vc of $G$ of size at most $k$, since each edge that is in $G$ but not in $G[B]$ is incident to a vertex in $H$.
+ \end{proof}
+
+\end{frame}
+
+
+\begin{frame}{Nemhauser-Trotter}
+
+ \begin{corollary}[\cite{NemhauserT74}]
+  There exists a smallest \vc $S$ of $G$ such that $S\cap V_- = \emptyset$ and $V_+ \subseteq S$.
+ \end{corollary}
+
+\begin{corollary}[\cite{NemhauserT74}]
+	\VC has a 2-approximation algorithm.
+\end{corollary}
+
+\end{frame}
+
+
+
+\begin{frame}{Crown reduction}
+ \begin{block}{(Crown Reduction)}
+  If solving LP$_{VC}(G)$ gives an optimal solution with $V_-\ne \emptyset$, then return $(G- (V_-\cup V_+), k-|V_+|)$.
+ \end{block}
+ 
+ \pause
+ \begin{block}{(Number of Vertices)}
+  If solving LP$_{VC}(G)$ gives an optimal solution with $V_- = \emptyset$ and $|V|>2k$, then return \No.
+ \end{block}
+
+ \pause
+ \begin{lemma}
+  (Crown Reduction) and (Number of Vertices) are sound.
+ \end{lemma}
+ \begin{proof}
+  (Crown Reduction) is sound by previous Lemmas.\\
+  Let $\alpha$ be an optimal solution for LP$_{VC}(G)$ and suppose $V_- = \emptyset$. The value of this solution is at least $|V|/2$.
+  Thus, the value of an optimal solution for ILP$_{\text{VC}}(G)$ is at least $|V|/2$.
+  Since $G$ has no \vc of size less than $|V|/2$, we have a \No-instance if $k<|V|/2$.
+ \end{proof}
+
+\end{frame}
+
+
+\begin{frame}{Linear vertex-kernel for \VC}
+
+ \begin{theorem}
+  \VC\ has a kernel with $2k$ vertices and $O(k^2)$ edges.
+ \end{theorem}
+ 
+ This is the smallest known kernel for \VC.\\
+ See \url{http://fpt.wikidot.com/fpt-races} for the current smallest kernels for various problems.
+
+\end{frame}
+
+
+
+\section{More on Crown Decompositions}
+
+\slides{
+\begin{frame}
+	\frametitle{Crown Decomposition: Definition}
+	
+	Recall:
+	\begin{definition}[Crown Decomposition]
+		A crown decomposition $(C,H,B)$ of a graph $G=(V,E)$ is a partition of $V$ into sets $C,H$, and $B$ such that
+		\begin{itemize}
+			\item the crown $C$ is a non-empty independent set,
+			\item the head $H=N_G(C)$,
+			\item the body $B = V \setminus (C\cup H)$, and
+			\item there is a matching of size $|H|$ in $G[H \cup C]$.
+		\end{itemize}
+	\end{definition}
+
+\end{frame}
+}
+
+\begin{frame}{Crown Lemma}
+ 
+ \begin{lemma}[Crown Lemma]
+  Let $G=(V,E)$ be a graph without isolated vertices
+  and with $|V|\ge 3k + 1$.\\
+  There is a polynomial time algorithm that either
+  \begin{itemize}
+   \item finds a matching of size $k + 1$ in $G$, or
+   \item finds a crown decomposition of $G$.
+  \end{itemize}
+ \end{lemma}%
+ \begin{overlayarea}{\textwidth}{6cm}%
+ \only<2>{
+ \noindent
+ To prove the lemma, we need K\H{o}nig's Theorem
+ \begin{theorem}[\cite{Konig31}]
+  In every bipartite
+  graph the size of a maximum matching is equal to the size of a minimum
+  vertex cover.
+ \end{theorem}
+ }%
+ \only<3->{%
+ \begin{proof}[Proof\lecturenotes{ of the Crown Lemma}]
+   Compute a maximum matching $M$ of $G$. If $|M|\ge k+1$, we are done.\\
+   \uncover<4->{
+   Note that $I := V\setminus V(M)$ is an independent set with $\lecturenotes{|V|-|V(M)|}\ge k+1$ vertices.\\} \uncover<5->{
+   Consider the bipartite graph $B$ formed by edges with one endpoint in $V(M)$ and the other in $I$.\\} \uncover<6->{
+   Compute a minimum vertex cover $X$ and a maximum matching $M'$ of $B$.\\}
+   \uncover<7->{
+   We know: $|X|=|M'|\le |M|\le  k$. Hence, $X\cap V(M) \ne \emptyset$.\\}
+   \uncover<8->{
+   Let $M^* = \{e\in M' : e\cap (X\cap V(M)) \ne \emptyset\}$.\\}
+   \uncover<9->{
+   We obtain a crown decomposition with
+   \lecturenotes{
+   \begin{itemize}
+    \item crown $C = V(M^*) \cap I$
+    \item head $H = X\cap V(M) = X\cap V(M^*)$, and
+    \item body $B = V\setminus (C\cup H)$.
+   \end{itemize}
+   As an exercise, verify that $(C,H,B)$ is indeed a crown decomposition.
+   }%
+   \slides{%
+    crown $C = V(M^*) \cap I$ and head $H = X\cap V(M) = X\cap V(M^*)$.
+   }}
+ \end{proof}
+ }
+ \end{overlayarea}
+ 
+\end{frame}
+
+
+\begin{frame}{After computing a kernel ...}
+ \begin{itemize}
+  \item ... we can use any algorithm to compute an actual solution.
+  \item Brute-force, faster exponential-time algorithms, parameterized algorithms, often also approximation algorithms
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Kernels}
+\begin{itemize}
+ \item A parameterized problem may not have a kernelization algorithm
+ \begin{itemize}
+  \item Example, \textsc{Coloring}\fn{Can one color the vertices of an input graph $G$ with $k$ colors such that no two adjacent vertices receive the same color?} parameterized by $k$ has no kernelization algorithm unless $\P = \NP$. 
+  \item A kernelization would lead to a polynomial time algorithm for the \NP-complete 3-\textsc{Coloring} problem
+ \end{itemize}
+ \item Only exponential kernels may be known for a parameterized problem
+ \item There is a theory of kernel lower bounds, establishing exponential lower bounds on the kernel size of certain parameterized problems.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Approximation algorithms}
+	
+	Besides constant factor approximation algorithms, positive results include:
+	\begin{itemize}
+		\item additive approximation (rare)
+		\item polynomial time approximation schemes (PTAS): able to achive an approximation ratio $1+\epsilon$ for any constant $\epsilon$ in polynomial time, but the running time depends on $1/\epsilon$. Restrictions include EPTAS (Efficient PTAS) and FPTAS (Fully PTAS), restricting how the running time may depend on the parameter $1/\epsilon$.
+	\end{itemize}
+	Negative results include
+	\begin{itemize}
+		\item no factor-$c$ approximation algorithm unless $\P = \NP$ / unless the Unique Games conjecture fails, etc.
+		\item APX-hardness, ruling out PTASs
+	\end{itemize}
+\end{frame}
+
+
+\section{Further Reading}
+
+\begin{frame}
+ \slides{\frametitle{Further Reading}}
+
+  \begin{itemize}
+   \item Vazirani's textbook \cite{Vazirani03}
+   \item Fellows et al.'s survey on \VC\ kernelization \cite{FellowsJKRW18}
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t, allowframebreaks]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+
+
+\end{document}

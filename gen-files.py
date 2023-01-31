@@ -3,7 +3,8 @@
 chapters = [
     "01-intro",
     "02-np",
-    "03-kernel"
+    "03-kernel",
+    "04-approx"
 ]
 
 for c in chapters:
