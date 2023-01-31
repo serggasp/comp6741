@@ -1,0 +1,352 @@
+%!TEX root = ../out/05-pc-SL.tex
+
+\begin{document}
+
+\title[Basics of PC]
+{Basics of Parameterized Complexity}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\lecturenotes{\maketitle}
+
+\begin{frame}
+ \slides{\frametitle{Outline}}
+ \tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\subsection{Vertex Cover}
+
+\begin{frame}
+ \slides{\frametitle{Vertex Cover}}
+
+ A \alert{vertex cover} in a graph $G=(V,E)$ is a subset of its vertices $S\subseteq V$ such that every edge of $G$ has at least one endpoint in $S$.
+ 
+  \pbDef{\textsc{Vertex Cover}}
+  {A graph $G=(V,E)$ and an integer $k$}
+  {$k$}
+  {Does $G$ have a vertex cover of size $k$?}
+ 
+\begin{center}
+ \begin{tikzpicture}[scale=1]
+
+   \draw (0,0) node[selected] (v1) {};
+   \draw (1,0) node[selected] (v2) {};
+   \draw (2,0) node[vertex] (v3) {};
+   \draw (3,0) node[selected] (v4) {};
+   \draw (4,0) node[vertex] (v5) {};
+   \draw (0,1) node[vertex] (v6) {};
+   \draw (1,1) node[selected] (v7) {};
+   \draw (3,1) node[vertex] (v8) {};
+   \draw (4,1) node[selected] (v9) {};
+   
+   \draw[very thick] (v6)--(v1)--(v7)--(v8)--(v4)--(v5)--(v9) (v7)--(v2)--(v3);
+   \draw[very thick] (v6)--(v7)--(v3) (v8)--(v9)--(v4);
+ \end{tikzpicture}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Algorithms for Vertex Cover}
+
+\begin{itemize}
+ \item brute-force: $O^*(2^n)$
+ \item brute-force: $O^*(n^k)$
+ \item \textsf{vc1}: $O^*(2^k)$
+ \item \textsf{vc2}: $O^*(1.4656^k)$
+ \item \cite{ChenKX10}: $O(1.2738^k+k\cdot n)$ \lecturenotes{(fastest known)}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Running times in practice}
+  \noindent
+  $n = 1000$ vertices,\\
+  $k = 20$ parameter\\
+  \bigskip
+  
+  \begin{tabular}{c c c}
+   \hline
+   \multicolumn{3}{c}{Running Time}\\
+   Theoretical & Nb of Instructions & Real\\
+   \hline
+   $2^n$ & $1.07 \cdot 10^{301}$ & $4.941 \cdot 10^{282}$ years\\
+   $n^k$ & $10^{60}$  & $4.611 \cdot 10^{41}$  years\\
+   $2^k \cdot n$ & $1.05 \cdot 10^9$ & $15.26$ milliseconds\\
+   $1.4656^k \cdot n$ & $2.10 \cdot 10^6$ & $0.31$ milliseconds\\
+   $1.2738^k + k\cdot n$ & $2.02 \cdot 10^4$ & $0.0003$ milliseconds\\
+   \hline
+  \end{tabular}
+
+  \bigskip
+  \noindent
+  Notes:\newline
+  -- We assume that $2^{36}$ instructions are carried out per second.\newline
+  -- The Big Bang happened roughly $13.5\cdot 10^9$ years ago.
+\end{frame}
+
+\begin{frame}
+ \frametitle{Goal of Parameterized Complexity}
+
+ \noindent
+ Confine the combinatorial explosion to a parameter $k$.\\
+ \smallskip
+
+ \begin{center}
+  \includegraphics[height=1cm]{pc.jpg}
+ \end{center}
+
+ \smallskip
+ \noindent
+ (1) Which problem--parameter combinations are fixed-parameter tractable (\FPT)? In other words, for which problem--parameter combinations are there algorithms with running times of the form
+ \begin{align*}
+  f(k) \cdot n^{O(1)},
+ \end{align*}
+ where the $f$ is a computable function independent of the input size $n$?
+ 
+ \smallskip
+ \noindent
+ (2) How small can we make the $f(k)$?
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Examples of Parameters}
+
+  \pbDef{A Parameterized Problem}{an instance of the problem}{a parameter}{a \Yes--\No question about the instance and the parameter}
+
+  \bigskip
+  \begin{itemize}
+   \item A parameter can be
+   \begin{itemize}
+    \item solution size
+    \item input size (trivial parameterization)
+    \item related to the structure of the input (maximum degree, treewidth, branchwidth, genus, ...)
+    \item combinations of parameters
+    \item etc.
+   \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Coloring}
+
+\begin{frame}
+  \slides{\frametitle{Coloring}}
+
+ \noindent
+ A \alert{$k$-coloring} of a graph $G=(V,E)$ is a function $f:V \rightarrow \{1,2,...,k\}$ assigning colors to $V$ such that no two adjacent vertices receive the same color.
+
+ \pbDef{\textsc{Coloring}}{Graph $G$, integer $k$}{$k$}{Does $G$ have a $k$-coloring?}
+
+  \begin{center}
+   \begin{tikzpicture}[scale=0.9]
+   %   \tikzstyle{vertex}=[minimum size=1mm,circle,draw,color=black,fill=black]
+   \tikzstyle{every node}=[vertex]
+   \node[vertex,fill=blue,label=left:$a$] (a) at (1.5,3  ) {};
+   \node[vertex,fill=red,label=right:$b$]  (b) at (3  ,3  ) {};
+   \node[vertex,fill=red,label=left:$c$]  (c) at (0  ,1.5) {};
+   \node[vertex,fill=white,label=right:$d$](d) at (1.5,1.5) {};
+   \node[vertex,fill=white,label=right:$e$](e) at (3  ,1.5) {};
+   \node[vertex,fill=red,label=below:$f$]  (f) at (1.5,0  ) {};
+   \node[vertex,fill=blue,label=below:$g$] (g) at (3  ,0  ) {};
+   \node[vertex,fill=red,label=below:$h$]  (h) at (4.5,0  ) {};
+   \draw[line width=2pt]     (a) -- (b) -- (e) -- (h) -- (g) -- (f) -- (d) -- (g) -- (e) -- (a) -- (c) -- (d) -- (a);
+   \end{tikzpicture}
+  \end{center}
+ 
+  \noindent
+  Brute-force: $O^*(k^n)$, where $n=|V(G)|$.\\
+  \cite{BjorklundHK09}: $O^*(2^n)$ by inclusion-exclusion \lecturenotes{(fastest known)}
+
+\end{frame}
+
+
+\begin{frame}{Coloring is probably not FPT}
+ \begin{itemize}
+  \item Known: \textsc{Coloring} is \NP-complete when $k=3$
+  \item Suppose there was a $O^*(f(k))$-time algorithm for \textsc{Coloring}
+  \begin{itemize}
+   \item Then, 3-\textsc{Coloring} can be solved in $O^*(f(3)) \subseteq O^*(1)$ time
+   \item Therefore, $\P = \NP$
+  \end{itemize}
+  \item Therefore, \textsc{Coloring} is not \FPT\ unless $\P=\NP$
+ \end{itemize}
+\end{frame}
+
+\subsection{Clique}
+
+\begin{frame}
+ \slides{\frametitle{Clique}}
+
+ A \alert{clique} in a graph $G=(V,E)$ is a subset of its vertices $S\subseteq V$ such that every two vertices from $S$ are adjacent in $G$.
+ 
+  \pbDef{\textsc{Clique}}
+  {Graph $G=(V,E)$, integer $k$}
+  {$k$}
+  {Does $G$ have a clique of size $k$?}
+ 
+\begin{center}
+ \begin{tikzpicture}[scale=1]
+   %\tikzstyle{vertex}=[minimum size=1mm,circle,fill=black]
+
+   \draw (0,0) node[vertex] (v1) {};
+   \draw (1,0) node[selected] (v2) {};
+   \draw (2,0) node[selected] (v3) {};
+   \draw (3,0) node[vertex] (v4) {};
+   \draw (4,0) node[vertex] (v5) {};
+   \draw (0,1) node[vertex] (v6) {};
+   \draw (1,1) node[selected] (v7) {};
+   \draw (3,1) node[vertex] (v8) {};
+   \draw (4,1) node[vertex] (v9) {};
+   
+   \draw[very thick] (v6)--(v1)--(v7)--(v8)--(v4)--(v5)--(v9) (v7)--(v2)--(v3);
+   \draw[very thick] (v6)--(v7)--(v3) (v8)--(v9)--(v4);
+ \end{tikzpicture}
+\end{center}
+
+\noindent
+Is \textsc{Clique} \NP-complete when $k$ is a fixed constant? Is it \FPT?
+\end{frame}
+
+
+\begin{frame}{Algorithm for Clique}
+ \begin{itemize}
+  \item For each subset $S\subseteq V$ of size $k$, check whether all vertices of $S$ are adjacent
+  \item Running time: $O^*\left( \binom{n}{k} \right) \subseteq O^*(n^k)$
+  \item When $k\in O(1)$, this is polynomial
+  \item But: we do not currently know an \FPT\ algorithm for \textsc{Clique}
+  \item Since \textsc{Clique} is $\W[1]$-hard, we believe it is not \FPT. (See lecture on $W$-hardness.)
+ \end{itemize}
+\end{frame}
+
+\subsection{$\Delta$-Clique}
+
+\begin{frame}
+ \frametitle{A different parameter for Clique}
+ 
+  \pbDef{$\Delta$-\textsc{Clique}}
+  {Graph $G=(V,E)$, integer $k$}
+  {$\Delta(G)$, i.e., the maximum degree of $G$}
+  {Does $G$ have a clique of size $k$?}
+ 
+\begin{center}
+ \begin{tikzpicture}[scale=1]
+   %\tikzstyle{vertex}=[minimum size=1mm,circle,fill=black]
+
+   \draw (0,0) node[vertex] (v1) {};
+   \draw (1,0) node[selected] (v2) {};
+   \draw (2,0) node[selected] (v3) {};
+   \draw (3,0) node[vertex] (v4) {};
+   \draw (4,0) node[vertex] (v5) {};
+   \draw (0,1) node[vertex] (v6) {};
+   \draw (1,1) node[selected] (v7) {};
+   \draw (3,1) node[vertex] (v8) {};
+   \draw (4,1) node[vertex] (v9) {};
+   
+   \draw[very thick] (v6)--(v1)--(v7)--(v8)--(v4)--(v5)--(v9) (v7)--(v2)--(v3);
+   \draw[very thick] (v6)--(v7)--(v3) (v8)--(v9)--(v4);
+ \end{tikzpicture}
+\end{center}
+
+\noindent
+Is $\Delta$-\textsc{Clique} \FPT?
+\end{frame}
+
+\begin{frame}
+ \frametitle{Algorithm for $\slides{\textcolor{white}{\Delta}}\lecturenotes{\Delta}$-Clique}
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+
+\KwIn{A graph $G$ and an integer $k$.}
+\KwOut{\Yes if $G$ has a clique of size $k$, and \No otherwise.}
+\SetKwComment{LabRule}{}{}
+\BlankLine
+   \If{$k = 0$}{
+   	 \Return{\Yes}
+   }
+   \ElseIf{$k>\Delta(G)+1$}{
+   	\Return{\No}
+   }
+   \Else{
+   	\tcc{A clique of size $k$ contains at least one vertex $v$.\newline\pause
+   		  For each $v\in V$, we check whether $G$ has a $k$-clique $S$ containing $v$ (note that $S\subseteq N_G[v]$ in this case).}\pause
+   	\ForEach{$v\in V$}{
+   		\ForEach{$S\subseteq N_G[v]$ with $|S|=k$}{
+   			\If{$S$ is a clique in $G$}{
+   				\Return{\Yes}
+   			}
+   		}
+   	}
+   	\Return{\No}
+   }
+\end{algorithm}
+\pause
+ Running time: $O^*((\Delta+1)^k) \subseteq O^*((\Delta+1)^{\Delta})$. (\FPT\ for parameter $\Delta$)
+\end{frame}
+
+\section{Basic Definitions}
+
+
+\begin{frame}
+ \frametitle{Main Parameterized Complexity Classes}
+
+ \noindent
+ $n$: instance size\newline
+ $k$: parameter
+ 
+ \medskip
+ \noindent
+ $\P$: class of problems that can be solved in $n^{O(1)}$ time\newline
+ $\FPT$: class of parameterized problems that can be solved in $f(k) \cdot n^{O(1)}$ time\newline
+% $\W[\cdot]$: parameterized intractability classes\newline
+ $\XP$: class of parameterized problems that can be solved in $f(k) \cdot n^{g(k)}$ time\\ $\qquad$ (``polynomial when $k$ is a constant'')
+ %\slides{\medskip}
+ \begin{align*}
+  \P \subseteq \FPT \subseteq \W[1] \subseteq \W[2] \dots \subseteq \W[P] \subseteq \XP
+ \end{align*}
+ %\slides{\medskip}
+
+ \noindent
+ \textbf{Known}: If $\FPT = \W[1]$, then the Exponential Time Hypothesis fails,
+        i.e. 3-\textsc{Sat} can be solved in $2^{o(n)}$ time, where $n$ is the number of variables.
+        
+ \smallskip
+ \noindent
+ \textbf{Note}: We assume that $f$ is \alert{computable} and \alert{non-decreasing}.
+
+\end{frame}
+
+
+\section{Further Reading}
+
+\begin{frame}
+ \slides{\frametitle{Further Reading}}
+
+  \begin{itemize}
+   \item Chapter 1, \emph{Introduction} in \cite{CyganFKL+15}
+%         Marek Cygan, Fedor V.\ Fomin, \L ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel Marx, Marcin Pilipczuk, Micha\l Pilipczuk, and Saket Saurabh. Parameterized Algorithms. Springer, 2015.
+   \item Chapter 2, \emph{The Basic Definitions} in \cite{DowneyF13}
+%         Rodney G. Downey and Michael R. Fellows. Fundamentals of Parameterized Complexity. Springer, 2013.
+   \item Chapter I, \emph{Foundations} in \cite{Niedermeier06}
+%         Rolf Niedermeier. Invitation to Fixed Parameter Algorithms. Oxford University Press, 2006.
+   \item \emph{Preface} in \cite{FlumG06}
+%         J\"{o}rg Flum and Martin Grohe. Parameterized Complexity Theory. Springer, 2006.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t, allowframebreaks]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+\end{document}

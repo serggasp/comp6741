@@ -1,0 +1,635 @@
+%!TEX root = ../out/09-RA-SL.tex
+
+% SAGE code examples
+%
+% P = list_plot([binomial(100,i) for i in range(101)]) # ,scale='semilogy' for logscale
+% show(P)
+%
+% print((2^100/sqrt(100)).n())
+% print(binomial(100,50).n())
+
+\newcommand{\mcF}{\mathcal{F}}
+\newcommand{\bs}{\backslash}
+\newcommand{\phisub}{\textsc{$\Phi$-Sub\-set}\xspace}
+\newcommand{\phiext}{\textsc{$\Phi$-Ex\-ten\-sion}\xspace}
+
+\begin{document}
+
+\title[Randomized Algorithms]
+{Randomized Algorithms}
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+\lecturenotes{\maketitle}
+
+\begin{frame}
+ \slides{\frametitle{Outline}}
+ \tableofcontents
+\end{frame}
+
+\section{Introduction} 
+
+\begin{frame}[c]\frametitle{Randomized Algorithms}
+
+
+    \begin{itemize}
+        \item Turing machines do not inherently have access to randomness.
+        \item Assume algorithm has also access to a stream of \alert{random bits} drawn uniformly at random.
+        \item With $r$ random bits, the probability space is the set of all $2^r$ possible strings of random bits (with uniform distribution).
+    \end{itemize}
+    
+
+\end{frame}
+
+\begin{frame}\frametitle{Las Vegas algorithms}
+    \begin{definition}
+		A \alert{Las Vegas algorithm} is a randomized algorithm whose output is always correct.
+	\end{definition}
+
+	\noindent
+	Randomness is used to upper bound the expected running time of the algorithm.
+	
+	\begin{block}{Example}
+		Quicksort with random choice of pivot.
+	\end{block}
+\end{frame}
+
+\begin{frame}[c]\frametitle{Monte Carlo algorithms}
+
+    \begin{definition}
+    \begin{itemize}
+        \item A \alert{Monte Carlo algorithm} is an algorithm whose output is incorrect with probability at most $p$, $0<p< 1$.
+        \item A Monte Carlo has \alert{one sided} error if its output is incorrect only on \Yes-instances or on \No-instances, but not both.
+        \item A one-sided error Monte Carlo algorithm with \alert{false negatives} answers \No for every \No-instance, and answers \Yes on \Yes-instances with probability $p\in (0,1)$. We say that $p$ is the \emph{success probability} of the algorithm.
+    \end{itemize}
+    \end{definition}
+
+
+\end{frame}
+
+\begin{frame}[c]\slides{\frametitle{Algorithms with increased success probability}}
+    
+    \begin{block}{Boosting success probability}
+    Suppose $A$ is a one-sided Monte Carlo algorithm with false negatives with success probability $p$. How can we use $A$ to design a new one-sided Monte Carlo algorithm with success probability $p^*>p$?
+    \end{block}
+
+    \pause
+    Let $t = -\frac{\ln (1-p^*)}{p}$ and run the algorithm $t$ times. Return \Yes\ if at least one run of the algorithm returned \Yes, and \No\ otherwise. \pause Failure probability is
+    \begin{align*}
+     (1-p)^t \leq (e ^{-p})^t = e^{-p\cdot t}=e^{\ln (1-p^*)}=1 - p^*
+    \end{align*}
+    via the inequality $1 - x \leq e^{-x}$.
+    
+    \pause
+    \medskip
+    \begin{definition}
+    	A \alert{randomized algorithm} is a one-sided Monte Carlo algorithm with \alert{constant} success probability.
+    \end{definition}
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Amplification}
+    
+    \begin{theorem}
+        \label{thm:ampl}
+        If a one-sided error Monte Carlo algorithm has success probability at least $p$, then repeating it independently $\lceil \frac{1}{p} \rceil$ times gives constant success probability.
+    \end{theorem}
+
+ In particular if we have a polynomial-time one-sided error Monte Carlo algorithm with success probability $p = \frac{1}{f(k)}$ for some computable function $f$, then we get a randomized \FPT\ algorithm with running time $O^*(f(k))$.
+
+\end{frame}
+
+\section{Vertex Cover}
+
+\begin{frame}[c]\slides{\frametitle{Vertex Cover}}
+    
+    For a graph $G = (V,E)$ a \alert{vertex cover} $X \subseteq V$ is a set of vertices such that every edge is adjacent to a vertex in $X$.
+    
+    \pbDef{\textsc{Vertex Cover}}{Graph $G$, integer $k$}{$k$}{Does $G$ have a vertex cover of size $k$?}
+
+    \pause
+    \noindent
+    \textbf{Warm-up:} design a randomized algorithm with running time $O^*(2^k)$.
+
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Randomized Algorithm for Vertex Cover}}
+	
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	\SetArgSty{}
+	
+	\alert{Algorithm $\text{rvc}(G=(V,E),k)$}\;
+	\BlankLine
+	
+	$S \leftarrow \emptyset$\;
+	\While{$k>0$ and $E \ne \emptyset$}{
+		Select an edge $uv\in E$ uniformly at random\;
+		Select an endpoint $w\in \{u,v\}$ uniformly at random\;
+		$S\leftarrow S\cup \{w\}$\;
+		$G \leftarrow G-w$\;
+		$k \leftarrow k-1$\;
+	}
+	\If{$S$ is a vertex cover of $G$}{
+		\Return{\Yes}
+	}\Else{
+		\Return{\No}
+	}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Success probability}
+	
+	\begin{itemize}
+		\item Let $C$ be a minimal (inclusion-wise minimal) vertex cover of $G$ of size $k'\le k$
+		\item What is the probability that Algorithm $\text{rvc}$ returns $C$?
+		\item When it selects an edge $uv\in E$, we have that $\{u,v\}\cap C \ne \emptyset$
+		\item When it selects a random endpoint $w\in \{u,v\}$, we have that $w\in C$ with probability $\ge 1/2$
+		\item It finds $C$ with probability at least $1/2^{k'}$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Randomized Algorithm for Vertex Cover}}
+
+\begin{theorem}
+	\VC\ has a randomized algorithm with running time $O^*(2^k)$.
+\end{theorem}    
+    \begin{proof}
+        \begin{itemize}
+            \item If $G$ has vertex cover number at most $k$, then Algorithm $\text{rvc}$ finds one with probability at least $\frac{1}{2^k}$.
+            \item Applying Theorem \ref{thm:ampl} gives a randomized \FPT\ running time of $O^*(2^k)$.
+        \end{itemize}
+    \end{proof}
+
+\end{frame}
+
+\section{Feedback Vertex Set}
+\begin{frame}\slides{\frametitle{Feedback Vertex Set}}
+    
+A \alert{feedback vertex set} of a multigraph $G=(V,E)$ is a set of vertices $S \subset V$ such that $G-S$ is acyclic.
+
+ \pbDef{\textsc{Feedback Vertex Set}}
+        {Multigraph $G$, integer $k$}{$k$}
+        {Does $G$ have a feedback vertex of size $k$?}
+
+    \pause
+    \noindent
+    Recall the following simplification rules for \textsc{Feedback Vertex Set}.
+\end{frame}
+
+\begin{frame}{Simplification Rules}
+
+        \begin{enumerate}
+            \item Loop: If loop at vertex $v$, remove $v$ and decrease $k$ by 1
+            \item Multiedge: Reduce the multiplicity of each edge with multiplicity $\ge 3$ to $2$.
+            \item Degree-1: If $v$ has degree at most 1 then remove $v$.
+            \item Degree-2: If $v$ is incident to exactly two edges $uv, vw$, then delete these 2 edges $uv, vw$ and add a new edge $uw$.
+            %\item Budget: If $k < 0$, then return \No.
+        \end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{The solution is incident to a constant fraction of the edges}
+
+    \begin{lemma}
+        \label{lem:1}
+        Let $G$ be a multigraph with minimum degree at least 3. Then, for every feedback vertex set $X$ of $G$, at least $1/3$ of the edges have at least one endpoint in $X$.
+    \end{lemma}
+
+
+    \pause
+    \begin{proof}
+       	Denote by $n$ and $m$ the number of vertices and edges of $G$, respectively.\\
+        Since $\delta(G)\ge 3$, we have that $m\ge 3n/2$.\\ Let $F:= G - X$.\\
+        Since $F$ has at most $n - 1$ edges, at least $\frac{1}{3}$ of the edges have an endpoint in $X$.
+    \end{proof}
+
+\end{frame}
+
+
+\begin{frame}[c]\frametitle{Randomized Algorithm}
+
+\begin{theorem}
+	\FVS\ has a randomized algorithm with running time $O^*(6^k)$.
+\end{theorem}
+\pause
+\noindent
+We prove the theorem using the following algorithm.
+\begin{itemize}
+	\item $S \leftarrow \emptyset$
+	\item Do $k$ times: Apply simplification rules; add a random endpoint of a random edge to $S$.
+	\item If $S$ is a feedback vertex set, return \Yes, otherwise return \No.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Proof}}
+    \begin{proof}
+        \begin{itemize}
+            \item We need to show: each time the algorithm adds a vertex $v$ to $S$, if $(G-S,k-|S|)$ is a \Yes-instance, then with probability at least $1/6$, the instance $(G-(S\cup \{v\}),k-|S|-1)$ is also a \Yes-instance. Then, by induction, we can conclude that with probability $1/(6^k)$, the algorithm finds a feedback vertex set of size at most $k$ if it is given a \Yes-instance.
+            \pause
+            \item Assume $(G-S,k-|S|)$ is a \Yes-instance.
+            \item Lemma \ref{lem:1} implies that with probability at least $1/3$, a randomly chosen edge $uv$ has at least one endpoint in some feedback vertex set of size $k-|S|$.
+            \item So, with probability at least $\frac{1}{2} \cdot \frac{1}{3} = \frac{1}{6}$, a randomly chosen endpoint of $uv$ belongs some feedback vertex set of size $\le k-|S|$. 
+            \pause
+            \item Applying Theorem \ref{thm:ampl} gives a randomized \FPT\ running time of $O^*(6^k)$.
+        \end{itemize}
+        
+    \end{proof}
+\end{frame}
+
+
+\begin{frame}[c]\frametitle{Improved analysis}
+    \begin{lemma}
+        Let $G$ be a multigraph with minimum degree at least 3. For every feedback vertex set $X$, at least $1/2$ of the edges of $G$ have at least one endpoint in $X$. 
+    \end{lemma}
+    \pause
+
+	\noindent
+    \textbf{Note:} For a feedback vertex set $X$, consider the forest $F := G - X$. The statement is equivalent to:
+    \[|E(G) \setminus E(F) |\ge |E(F)|\]  
+    Let $J \subseteq E(G)$ denote the edges with one endpoint in $X$, and the other in $V(F)$. We will show the stronger result:
+    \[ |J| \ge |V(F)|\]
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Improved analysis}}
+\begin{proof}
+    \begin{itemize}
+        \item Let $V_{\leq 1}, V_{2}, V_{\geq 3} $ be the set of vertices that have degree at most 1, exactly 2, and at least 3, respectively, in $F$. 
+        \pause
+        \item     Since $\delta(G)\ge 3$, each vertex in $V_{\leq 1}$ contributes at least 2 edges to $J$, and each vertex in $V_{2}$ contributes at least 1 edge to $J$. 
+        \pause
+        \item We show that $|V_{\geq 3}| \le |V_{\leq 1}|$ by induction on $|V(F)|$.
+        \begin{itemize}
+            \item Trivially true for forests with at most $1$ vertex.
+            \item Assume true for forests with at most $n - 1$ vertices.
+            \item For any forest on $n$ vertices, consider removing a leaf (which must always exist) to obtain $F'$ with the vertex partition $(V'_{\leq 1}, V'_{2}, V'_{\geq 3})$.\\
+            If $|V_{\geq 3}|=|V'_{\geq 3}|$, then we have that $|V_{\geq 3}|=|V'_{\geq 3}|\le |V'_{\leq 1}|\le |V_{\leq 1}|$.\\
+            Otherwise, $|V_{\geq 3}|=|V'_{\geq 3}|+1 \leq |V'_{\leq 1}| + 1 = |V_{\leq 1}|$.
+        \end{itemize}
+
+        \pause
+        \item We conclude that:
+        \begin{align*}
+         |E(G) \setminus E(F)| \geq |J| \geq 2 |V_{\leq 1}| + |V_2| \ge |V_{\leq 1}| + |V_2| + |V_{\geq 3}| = |V(F)|
+        \end{align*}
+    \end{itemize}
+\end{proof}
+\end{frame}
+
+
+\begin{frame}[c]\frametitle{Improved Randomized Algorithm}
+    
+    
+    \begin{theorem}
+    	\FVS\ has a randomized algorithm with running time $O^*(4^k)$.
+    \end{theorem}
+
+	\noindent
+	\begin{block}{Note}
+		This algorithmic method is applicable whenever the vertex set we seek is incident to a constant fraction of the edges.
+	\end{block}
+
+\end{frame}
+
+
+\section{Color Coding}
+
+
+\begin{frame}[c]\frametitle{Longest Path}
+    
+
+\pbDef{\textsc{Longest Path}}
+        {Graph $G$, integer $k$}
+        {$k$}
+        {Does $G$ have a path on $k$ vertices as a subgraph?}
+
+        \pause
+
+    \begin{block}{NP-complete}
+        To show that \textsc{Longest Path} is \NP-hard, reduce from \textsc{Hamiltonian Path} by setting $k = n$ and leaving the graph unchanged.
+    \end{block}
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Color Coding}
+   
+   \noindent\textbf{Notation:} $[k] = \{1,2,\dots, k\}$
+    \begin{lemma}\label{lem:colorcoding}
+        Let $U$ be a set of size $n$, and let $X \subseteq U$ be a subset of size $k$. Let $\chi:U \to [k]$ be a coloring of the elements of $U$, chosen uniformly at random.
+        % (i.e., each element of $U$ is colored with one of $k$ colors uniformly and independently at random). 
+        Then the probability that the elements of $X$ are colored with pairwise distinct colors is at least $e^{-k}$.
+    \end{lemma} 
+
+
+    \pause
+    \begin{proof}
+        There are $k^n$ possible colorings $\chi$ and $k! k^{n-k}$ of them are injective on $X$. Using the inequality
+        \begin{align*}
+           	k! > (k / e)^k,
+        \end{align*}
+        the lemma follows since
+        \begin{align*}
+           	\frac{k! \cdot k^{n-k}}{k^n} > \frac{k^k \cdot k^{n-k}}{e^k\cdot k^n} = e^{-k}.
+        \end{align*}
+    \end{proof}
+
+
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Colorful Path}
+    
+    A path is \alert{colorful} if all vertices of the path are colored with pairwise distinct colors.
+
+    \begin{lemma}\label{lem:longpath}
+        Let $G$ be an undirected graph, and let $\chi: V(G) \to [k]$ be a coloring of its vertices with $k$ colors. There is an algorithm that checks in time $O^*(2^k)$ whether $G$ contains a colorful path on $k$ vertices.
+    \end{lemma}
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Colorful Path II}}
+        
+        \begin{proof}
+        Partition $V(G)$ into $V_1,...,V_k$ subsets such that vertices in $V_i$ are colored $i$. 
+        \pause
+
+        Apply dynamic programming on nonempty $S \subseteq \{1,...,k\}$. For $u \in \bigcup_{i \in S} V_i$ let $P(S,u)=1$ if there is a colorful path with colors from $S$ and $u$ as an endpoint.
+        \pause
+        We have the following:
+        \begin{itemize}
+            \item For $|S| = 1$, $P(S,u)=1$ for $u \in V(G)$ iff $S = \{\chi(u)\}$.
+            \item For $|S| > 1$
+            \[P(S,u) = \begin{cases} 
+                \bigvee_{uv \in E(G)} P(S \bs \{\chi(u)\}, v) & \text{ if } \chi(u) \in S \\
+                0 & \text{ otherwise} 
+            \end{cases}
+            \]
+        \end{itemize}
+        \pause
+        All values of $P$ can be computed in $O^*(2^k)$ time and there exists a colorful $k$-path iff $P([k],v)=1$ for some vertex $v \in V(G)$.
+        \end{proof}
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Longest Path}}
+    
+    \begin{theorem}
+    	\textsc{Longest Path} has a randomized algorithm with running time $O^*((2\cdot e)^k)$.
+    \end{theorem}
+
+	\noindent
+\begin{block}{Note}
+	This algorithmic method is applicable whenever we seek a subgraph of size $f(k)$ with constant treewidth.
+\end{block}
+
+\end{frame}
+
+
+
+\section{Monotone Local Search}
+
+\begin{frame}
+	\slides{\frametitle{Exponential-time algorithms and parameterized algorithms}}
+	
+	\begin{columns}
+		\noindent
+		\begin{minipage}[t]{.49\textwidth}
+			{\color{Blue}\noindent\rule{\hsize}{4pt}\newline
+				\centering Exponential-time algorithms\newline
+				\rule{\textwidth}{4pt}}
+			\slides{\vspace{-4mm}}
+			\begin{itemize}
+				\item Algorithms for \NP-hard problems
+				\item Beat brute-force \& improve
+				\item Running time measured in the size of the universe $n$
+				\item $O(2^n\cdot n)$,  $O(1.5086^n)$,  $O(1.0892^n)$
+			\end{itemize}
+		\end{minipage}%
+		\hfill%
+		\begin{minipage}[t]{.49\textwidth}
+			{\color{Green}\rule{\linewidth}{4pt}\newline
+				\centering Parameterized algorithms\newline
+				\rule{\linewidth}{4pt}}
+			\slides{\vspace{-4mm}}
+			\begin{itemize}
+				\item Algorithms for \NP-hard problems
+				\item Use a parameter $k$\\(often $k$ is the solution size)
+				\item Algorithms with running time $f(k)\cdot n^c$
+				\item $k^{k}n^{O(1)}$, $5^k n^{O(1)}$, $O(1.2738^k+kn)$ 
+			\end{itemize}
+		\end{minipage}%
+	\end{columns}
+    \begin{block}{}
+	Can we use Parameterized algorithms to design fast Exponential-time algorithms?
+\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example: Feedback Vertex Set}
+	
+	$S\subseteq V$ is a \alert{feedback vertex set} in a graph $G=(V,E)$ if $G-S$ is acyclic.\newline
+	\begin{minipage}{0.7\textwidth}
+		\pbDef{\textsc{Feedback Vertex Set}}{Graph $G=(V,E)$, integer $k$}{$k$}{Does $G$ have a \lecturenotes{feedback vertex set}\slides{f.v.s.} of size at most $k$?}
+	\end{minipage}
+	\begin{minipage}{0.29\textwidth}
+		\begin{tikzpicture}[scale=0.6]
+		\node[vertex]  (a) at (1.5,3  ) {};
+		\node[vertex] (b) at (3  ,3  ) {};
+		\node[vertex] (c) at (0  ,1.5) {};
+		\node[selected]                 (d) at (1.5,1.5) {};
+		\node[selected]                 (e) at (3  ,1.5) {};
+		\node[vertex] (f) at (1.5,0  ) {};
+		\node[vertex]                 (g) at (3  ,0  ) {};
+		\node[vertex] (h) at (4.5,0  ) {};
+		\node[vertex] (i) at (0,3) {};
+		\draw[line width=1.5pt]     (i) -- (a) -- (b) -- (e) -- (h) -- (g) -- (f) -- (d) -- (g) -- (e) -- (a) -- (c) -- (d) -- (a);
+		\end{tikzpicture}
+	\end{minipage}
+	
+	\pause
+	%\medskip
+	\noindent
+	\begin{columns}
+		\begin{minipage}[t]{.49\textwidth}
+			{\color{Blue}\rule{\linewidth}{4pt}\\
+				\centering Exponential-time algorithms\newline
+				\rule{\linewidth}{4pt}}
+			\slides{\vspace{-4mm}}
+			\begin{itemize}
+				\item $O^*(2^n)$ trivial
+				%\item $O(1.8899^n)$ \mycite{Razgon 06}
+				%\item $O(1.7548^n)$ \mycite{Fomin, Gaspers, Pyatkin 06}
+				\item $O(1.7548^n)$ \cite{FominGPR08}
+				%\item $O(1.7356^n)$ \mycite{Xiao, Nagamoshi 13}
+				\item $O(1.7347^n)$ \cite{FominV10}
+				\item $O(1.7266^n)$ \cite{XiaoN15}
+			\end{itemize}
+		\end{minipage}%
+		\hfill%
+		\begin{minipage}[t]{.49\textwidth}
+			{\color{Green}\rule{\linewidth}{4pt}\\
+				\centering Parameterized algorithms\newline
+				\rule{\linewidth}{4pt}}
+			\slides{\vspace{-4mm}}
+			\begin{itemize}
+				\item $O^*((17k^4)!)$ \cite{Bodlaender94}
+				\item $O^*((2k+1)^k)$ \cite{DowneyF99}
+				%\item $\max(12^k,(4\log k)^k) n^{\omega}$ \mycite{Raman, Saurabh, Subramanian 02}
+				%\item $O(37.7^kn^2)$ \mycite{Guo, Gramm, H{\"u}ffner, Niedermeier, Wernicke 05}
+				%\item $(10.6^kn^3)$ \mycite{Dehne, Fellows, Langston, Rosamond, Stevens 05}
+				%\item $O(5^kkn^2)$ \mycite{Chen, Fomin, Liu, Lu, Villanger 07}
+				\\{\footnotesize $\vdots$}
+				%\item $O(3.83^k k n^2)$ \mycite{Cao, Chen, Liu 10}
+				%\item $O^*(3.591^k)$ \mycite{Kociumaka, Pilipczuk 14}
+				%\item $O^*(3^k)$ (r) \mycite{Cygan 11}
+				\item $O^*(3.460^k)$ deterministic \cite{IwataK19}
+				\item $O^*(2.7^k)$ randomized \cite{LiN19}
+			\end{itemize}
+		\end{minipage}%
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Exponential-time algorithms via parameterized algorithms}
+	
+	\begin{block}{Binomial coefficients}
+		$\displaystyle \argmax_{0\le k\le n} \binom{n}{k} = n/2$ ~~~~~and~~~~~
+		$\displaystyle \binom{n}{n/2} = \Theta(2^n/\sqrt{n})$
+	\end{block}
+	
+	\pause
+	\begin{block}{Algorithm for \textsc{Feedback Vertex Set}}
+		\begin{itemize}
+			\item Set $t= 0.6511\cdot n$
+			\item If $k\le t$, run $O^*(2.7^k)$ algorithm
+			\item Else check all $\displaystyle \binom{n}{k}$ vertex subsets of size $k$
+		\end{itemize}
+	\end{block}
+	
+	Running time: $\displaystyle O^*\left(\max \left( 2.7^t, \binom{n}{t} \right)\right) = O^*(1.9093^n)$
+	
+	\pause
+	\noindent
+	This approach gives algorithms faster than $O^*(2^n)$ for subset problems with a parameterized algorithm faster than $O^*(4^k)$.
+	
+\end{frame}
+
+
+\begin{frame}[c]\frametitle{Subset Problems}
+    
+    \begin{block}{}
+    An \textit{implicit set system} is a function $\Phi$ with:
+    \begin{itemize}
+        \item Input: instance $I \in \{0,1\}^*$, $|I| = N$
+        \item Output: set system $(U_I, \mcF_I)$:
+        \begin{itemize}
+            \item universe $U_I$, $|U_I| = n$
+            \item family $\mcF_I$ of subsets of $U_I$
+        \end{itemize}
+    \end{itemize}
+    \end{block}
+    \pause
+    \pbDefNoPara{\phisub}
+                {Instance I}
+                {Is $|\mathcal{F}_I| > 0$?}
+
+    \pause
+    \pbDefNoPara{\phiext}
+                {Instance $I$, a set $X \subseteq U_I$, and an integer $k$}
+                {Does there exist a subset $S \subseteq (U_I \backslash X)$ such that $S \cup X \in \mathcal{F}_I$ and $|S| \leq k$?}
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Algorithm}
+    
+    Suppose $\phiext$ has a $O^*(c^k)$ time algorithm $B$.
+
+    \begin{block}{Algorithm for checking whether $\slides{\color{white}}\mcF_I$ contains a set of size $\slides{\color{white}}k$}
+        \begin{itemize}
+            \item Set $t = \max \left( 0, \frac{ck - n}{c - 1} \right)$
+            \item Uniformly at random select a subset $X \subseteq U_I$ of size $t$
+            \item Run $B(I,X,k-t)$
+        \end{itemize}
+    \end{block}
+    \pause
+
+    Running time: \cite{FominGLS19}
+    \[ O^* \left( \frac{\binom{n}{t}}{\binom{k}{t}} \cdot c^{k-t} \right) = O^*\left( 2 - \frac{1}{c} \right)^n \]
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Intuition}
+    
+    \begin{block}{Brute-force randomized algorithm}
+        \begin{itemize}
+            \item Pick $k$ elements of the universe one-by-one.\\
+            \item Suppose $\mcF_I$ contains a set of size $k$.\\
+        \end{itemize}
+        
+        Success probability:
+        \begin{align*}
+            \frac{k}{n} \cdot \frac{k-1}{n-1} \cdot ... \cdot &\frac{k-t}{n-t} \cdot ... \cdot \frac{2}{n - (k-2)}\frac{1}{n-(k-1)} = \frac{1}{\binom{n}{k}} \\
+            & ~~\,\rotatebox{90}{$\,=$}\\
+            & ~~\frac{1}{c}
+        \end{align*}    
+    \end{block}
+
+\end{frame}
+
+
+\begin{frame}[c]\slides{\frametitle{Randomized Monotone Local Search}}
+   
+    \begin{theorem}[\cite{FominGLS19}]
+        If there exists a (randomized) algorithm for \phiext with running time $O^*(c^k)$ then there exists a randomized algorithm for \phisub with running time $(2 - \frac{1}{c})^n \cdot N^{O(1)}$.
+    \end{theorem} 
+    \pause
+    \begin{theorem}[\cite{FominGLS19}]
+        \FVS\ has a randomized algorithm with running time $O^*\left(\left( 2 - \frac{1}{2.7}\right)^n\right) \subseteq O(1.6297^n)$.
+    \end{theorem}
+
+
+\end{frame}
+
+\begin{frame}[c]\frametitle{Derandomization}
+
+Derandomization at the expense of a subexponential factor in the running time.
+\begin{theorem}[\cite{FominGLS19}]
+	If there exists an algorithm for \phiext with running time $O^*(c^k)$ then there exists an algorithm for \phisub with running time $(2 - \frac{1}{c})^{n+o(n)} \cdot N^{O(1)}$.
+\end{theorem} 
+\pause
+\begin{theorem}[\cite{FominGLS19}]
+	\FVS\ has an algorithm with running time $O^*\left(\left( 2 - \frac{1}{3.460}\right)^n\right) \subseteq O(1.7110^n)$.
+\end{theorem}
+
+\end{frame}
+
+
+
+\begin{frame}[c]\frametitle{Further Reading}
+    \begin{itemize}
+   
+    \item Chapter 5, \emph{Randomized methods in parameterized algorithms} by \cite{CyganFKL+15}
+%    Marek Cygan, Fedor V.\ Fomin, \L ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel Marx, Marcin Pilipczuk, Micha\l{} Pilipczuk, and Saket Saurabh. Parameterized Algorithms. Springer, 2015.
+    \item \emph{Exact Algorithms via Monotone Local Search} \cite{FominGLS19}
+%    Fedor V. Fomin, Serge Gaspers, Daniel Lokshtanov, Saket Saurabh.  Proceedings of the 48th ACM Symposium on Theory of Computing (STOC 2016), ACM, pages 764-775, 2016.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t, allowframebreaks]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+
+
+\end{document}

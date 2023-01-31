@@ -1,0 +1,490 @@
+%!TEX root = ../out/06-W-SL.tex
+
+\begin{document}
+
+\title[Parameterized intractability]
+{Parameterized intractability: the W-hierarchy}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\lecturenotes{\maketitle}
+
+\begin{frame}
+ \slides{\frametitle{Outline}}
+ \tableofcontents
+\end{frame}
+
+\section{Parameterized Complexity Theory}
+
+\begin{frame}
+	\frametitle{Main Parameterized Complexity Classes}
+	
+	\noindent
+	$n$: instance size\newline
+	$k$: parameter
+	
+	\medskip
+	\noindent
+	$\P$: class of problems that can be solved in $n^{O(1)}$ time\newline
+	$\FPT$: class of parameterized problems that can be solved in $f(k) \cdot n^{O(1)}$ time\newline
+	$\W[\cdot]$: parameterized intractability classes\newline
+	$\XP$: class of parameterized problems that can be solved in $f(k) \cdot n^{g(k)}$ time\\ $\qquad$ (``polynomial when $k$ is a constant'')
+	%
+	\slides{\medskip}
+	\begin{align*}
+	\P \subseteq \FPT \subseteq \W[1] \subseteq \W[2] \dots \subseteq \W[P]\subseteq \XP
+	\end{align*}
+	%\slides{\medskip}
+	
+	%\noindent
+	%\textbf{Known}: If $\FPT = \W[1]$, then the Exponential Time Hypothesis fails,
+	%i.e. 3-\textsc{Sat} can be solved in $2^{o(n)}$ time, where $n$ is the number of variables.
+	
+	\smallskip
+	\noindent
+	\textbf{Note}: We assume that $f$ is \alert{computable} and \alert{non-decreasing}.
+	
+\end{frame}
+
+
+\begin{frame}{Polynomial-time reductions for parameterized problems?}
+
+ \noindent
+ A \alert{vertex cover} in a graph $G=(V,E)$ is a subset of vertices $S\subseteq V$ such that every edge of $G$ has an endpoint in $S$.
+ \pbDef{\textsc{Vertex Cover}}{Graph $G$, integer $k$}{$k$}{Does $G$ have a vertex cover of size $k$?}
+%
+ \noindent
+ An \alert{independent set} in a graph $G=(V,E)$ is a subset of vertices $S\subseteq V$ such that there is no edge $uv\in E$ with $u,v\in S$.
+ \pbDef{\textsc{Independent Set}}{Graph $G$, integer $k$}{$k$}{Does $G$ have an independent set of size $k$?}
+ 
+ \pause
+ \begin{itemize}
+  \item We know: \textsc{Independent Set} $\le_\P$ \textsc{Vertex Cover}
+  \item However: \textsc{Vertex Cover} $\in \FPT$ but \textsc{Independent Set} is not known to be in $\FPT$
+ \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{We will need another type of reductions}
+ 
+ \begin{itemize}
+  \item Issue with polynomial-time reductions: parameter can change arbitrarily.
+  \pause
+  \item We will want the reduction to produce an instance where the parameter is bounded by a function of the parameter of the original instance.
+  \smallskip
+  \pause
+  \item Also: we can allow the reduction to take \FPT\ time instead of only polynomial time.
+ \end{itemize}
+ 
+\end{frame}
+
+
+\subsection{Parameterized reductions}
+
+
+\begin{frame}{Parameterized reduction}
+ \begin{definition}
+ 	A \alert{parameterized reduction} from a parameterized decision problem $\Pi_1$ to a parameterized decision problem $\Pi_2$ is an algorithm, which, for any instance $I$ of $\Pi_1$ with parameter $k$ produces an instance $I'$ of $\Pi_2$ with parameter $k'$ such that
+ 	\begin{itemize}
+ 		\item $I$ is a \Yes-instance for $\Pi_1$ $\Leftrightarrow$ $I'$ is a \Yes-instance for $\Pi_2$,
+ 		\item there exists a computable function $g$ such that $k'\le g(k)$, and
+ 		\item there exists a computable function $f$ such that the running time of the algorithm is $f(k) \cdot |I|^{O(1)}$.
+  	\end{itemize}
+ 	If there exists a parameterized reduction from $\Pi_1$ to $\Pi_2$, we write $\Pi_1 \le_{\FPT} \Pi_2$.
+ \end{definition}
+ 
+ \noindent
+ \textbf{Note}: We can assume that $f$ and $g$ are non-decreasing.
+\end{frame}
+
+
+\begin{frame}{New FPT algorithms via reductions}
+	
+	\begin{lemma}
+		If $\Pi_1, \Pi_2$ are parameterized decision problems such that $\Pi_1 \le_{\FPT} \Pi_2$, then\\ $\Pi_2 \in \FPT$ implies $\Pi_1\in \FPT$.
+	\end{lemma}
+	\begin{proof}[Proof sketch]
+		To obtain an \FPT\ algorithm for $\Pi_1$, perform the reduction and then use an \FPT\ algorithm for $\Pi_2$ on the resulting instance.
+	\end{proof}
+	
+\end{frame}
+
+
+\subsection{Parameterized complexity classes}
+
+\begin{frame}{Boolean Circuits}
+	\begin{definition}
+		A \alert{Boolean circuit} is a directed acyclic graph with the nodes labeled as follows:
+		\begin{itemize}
+			 \item every node of in-degree $0$ is an \alert{input node},
+			 \item every node with in-degree $1$ is a \alert{negation node} ($\neg$), and
+			 \item every node with in-degree $\ge 2$ is either an \alert{AND-node} ($\wedge$) or an \alert{OR-node} ($\vee$).
+		\end{itemize}
+		Moreover, exactly one node with out-degree 0 is also labeled the \alert{output node}.\newline
+		The \alert{depth} of the circuit is the maximum length of a directed path from an input node to the output node.\newline
+		The \alert{weft} of the circuit is the maximum number of nodes with in-degree $\ge 3$ on a directed path from an input node to the output node. 
+	\end{definition}
+\end{frame}
+
+\begin{frame}{Example}
+	\begin{center}
+		\begin{tikzpicture}
+			\node[vertex,label=below:$a$] (a) at (0,0) {};
+			\node[vertex,label=below:$b$] (b) at (1,0) {};
+			\node[vertex,label=below:$c$] (c) at (2,0) {};
+			\node[vertex,label=below:$d$] (d) at (3,0) {};
+			\node[vertex,label=below:$e$] (e) at (4,0) {};
+			
+			\node[gate] (an) at (0,1) {$\neg$};
+			\node[gate] (bn) at (1,1) {$\neg$};
+			\node[gate] (cn) at (2,1) {$\neg$};
+			\node[gate] (dn) at (3,1) {$\neg$};
+			\node[gate] (en) at (4,1) {$\neg$};
+			
+			\node[gate] (ab) at (-1,2) {$\vee$};
+			\node[gate] (bc) at (0,2) {$\vee$};
+			\node[gate] (ac) at (1,2) {$\vee$};
+			\node[gate] (bd) at (2,2) {$\vee$};
+			\node[gate] (cd) at (3,2) {$\vee$};
+			\node[gate] (ce) at (4,2) {$\vee$};
+			\node[gate] (de) at (5,2) {$\vee$};
+			
+			\node[gate] (o) at (2,3) {$\wedge$};
+			\node (out) at (2,3.5) {out};
+			
+			\draw[->] (a)--(an);
+			\draw[->] (b)--(bn);
+			\draw[->] (c)--(cn);
+			\draw[->] (d)--(dn);
+			\draw[->] (e)--(en);
+			\draw[->] (an)--(ab);
+			\draw[->] (an)--(ac);
+			\draw[->] (bn)--(ab);
+			\draw[->] (bn)--(bc);
+			\draw[->] (bn)--(bd);
+			\draw[->] (cn)--(ac);
+			\draw[->] (cn)--(bc);
+			\draw[->] (cn)--(cd);
+			\draw[->] (cn)--(ce);
+			\draw[->] (dn)--(bd);
+			\draw[->] (dn)--(cd);
+			\draw[->] (dn)--(de);
+			\draw[->] (en)--(ce);
+			\draw[->] (en)--(de);
+			\draw[->] (ab)--(o);
+			\draw[->] (bc)--(o);
+			\draw[->] (ac)--(o);
+			\draw[->] (bd)--(o);
+			\draw[->] (cd)--(o);
+			\draw[->] (ce)--(o);
+			\draw[->] (de)--(o); 
+		\end{tikzpicture}
+	\end{center}
+	A depth-3, weft-1 Boolean circuit with inputs $a,b,c,d,e$.
+\end{frame}
+
+\begin{frame}{Weighted Circuit Satisfiability}
+	
+	\noindent
+	Given an assignment of Boolean values to the input gates, the circuit determines Boolean values at each node in the obvious way.
+	
+	\noindent
+	If the value of the output node is $1$ for an input assignment, we say that this assignment \alert{satisfies} the circuit.
+	
+	\noindent
+	The \alert{weight} of an assignment is its number of $1$s.
+	
+	\pbDef{\textsc{Weighted Circuit Satisfiability} (WCS)}{A Boolean circuit $C$, an integer $k$}{$k$}{Is there an assignment with weight $k$ that satisfies $C$?}
+	
+	\noindent
+	\textbf{Exercise}: Show that \textsc{Weighted Circuit Satisfiability} $\in \XP$.
+	 
+\end{frame}
+
+\begin{frame}{WCS for special circuits}
+	\begin{definition}
+	The class of circuits $\mathcal{C}_{t,d}$ contains the circuits with weft $\le t$ and depth $\le d$.
+	\end{definition}
+	
+	\noindent
+	For any class of circuits $\mathcal{C}$, we can define the following problem.
+	\pbDef{WCS[$\mathcal{C}$]}{A Boolean circuit $C\in \mathcal{C}$, an integer $k$}{$k$}{Is there an assignment with weight $k$ that satisfies $C$?}
+\end{frame}
+
+\begin{frame}{W classes}
+	
+	\begin{definition}[W-hierarchy]
+		Let $t\in \{1,2,\dots \}$.
+		A parameterized problem $\Pi$ is in the parameterized complexity class $\W[t]$ if there exists a parameterized reduction from $\Pi$ to WCS[$\mathcal{C}_{t,d}$] for some constant $d\ge 1$.
+	\end{definition}
+	
+\end{frame}
+
+\begin{frame}{Independent Set and Dominating Set}
+	
+	\begin{theorem}
+		\textsc{Independent Set} $\in \W[1]$.
+	\end{theorem}
+	\begin{theorem}
+		\textsc{Dominating Set} $\in \W[2]$.
+	\end{theorem}
+	
+	\noindent
+	\textbf{Recall}: A \alert{dominating set} of a graph $G=(V,E)$ is a set of vertices $S\subseteq V$ such that $N_G[S]=V$.
+        \pbDef{\textsc{Dominating Set}}{A graph $G=(V,E)$ and an integer $k$}{$k$}{Does $G$ have a dominating set of size at most $k$?}
+\end{frame}
+
+\begin{frame}{``Proof'' by picture}
+
+	\noindent
+	Parameterized reductions from \textsc{Independent Set} to WCS[$\mathcal{C}_{1,3}$] and from \textsc{Dominating Set} to WCS[$\mathcal{C}_{2,2}$].
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+		 \node[vertex,label=above:$a$] (a) at (1,2) {};
+		 \node[vertex,label=left:$b$] (b) at (0,1) {};
+		 \node[vertex,label=right:$c$] (c) at (2,1) {};
+		 \node[vertex,label=below:$d$] (d) at (0,-0.5) {};
+		 \node[vertex,label=below:$e$] (e) at (2,-0.5) {};
+		 
+		 \draw (b)--(a)--(c)--(e)--(d)--(c)--(b)--(d);
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.8]
+		\node[vertex,label=below:$a$] (a) at (0,-0.5) {};
+		\node[vertex,label=below:$b$] (b) at (1,-0.5) {};
+		\node[vertex,label=below:$c$] (c) at (2,-0.5) {};
+		\node[vertex,label=below:$d$] (d) at (3,-0.5) {};
+		\node[vertex,label=below:$e$] (e) at (4,-0.5) {};
+		
+		\node[gate] (an) at (0,0.5) {$\neg$};
+		\node[gate] (bn) at (1,0.5) {$\neg$};
+		\node[gate] (cn) at (2,0.5) {$\neg$};
+		\node[gate] (dn) at (3,0.5) {$\neg$};
+		\node[gate] (en) at (4,0.5) {$\neg$};
+		
+		\node[gate] (ab) at (-1,2) {$\vee$};
+		\node[gate] (bc) at (0,2) {$\vee$};
+		\node[gate] (ac) at (1,2) {$\vee$};
+		\node[gate] (bd) at (2,2) {$\vee$};
+		\node[gate] (cd) at (3,2) {$\vee$};
+		\node[gate] (ce) at (4,2) {$\vee$};
+		\node[gate] (de) at (5,2) {$\vee$};
+		
+		\node[gate] (o) at (2,3) {$\wedge$};
+		\node (out) at (2,3.5) {out};
+		
+		\draw[->] (a)--(an);
+		\draw[->] (b)--(bn);
+		\draw[->] (c)--(cn);
+		\draw[->] (d)--(dn);
+		\draw[->] (e)--(en);
+		\draw[->] (an)--(ab);
+		\draw[->] (an)--(ac);
+		\draw[->] (bn)--(ab);
+		\draw[->] (bn)--(bc);
+		\draw[->] (bn)--(bd);
+		\draw[->] (cn)--(ac);
+		\draw[->] (cn)--(bc);
+		\draw[->] (cn)--(cd);
+		\draw[->] (cn)--(ce);
+		\draw[->] (dn)--(bd);
+		\draw[->] (dn)--(cd);
+		\draw[->] (dn)--(de);
+		\draw[->] (en)--(ce);
+		\draw[->] (en)--(de);
+		\draw[->] (ab)--(o);
+		\draw[->] (bc)--(o);
+		\draw[->] (ac)--(o);
+		\draw[->] (bd)--(o);
+		\draw[->] (cd)--(o);
+		\draw[->] (ce)--(o);
+		\draw[->] (de)--(o); 
+		\end{tikzpicture}
+		\begin{tikzpicture}[scale=0.8]
+		\node[vertex,label=below:$a$] (a) at (0,-1) {};
+		\node[vertex,label=below:$b$] (b) at (1,-1) {};
+		\node[vertex,label=below:$c$] (c) at (2,-1) {};
+		\node[vertex,label=below:$d$] (d) at (3,-1) {};
+		\node[vertex,label=below:$e$] (e) at (4,-1) {};
+		
+		\node[gate] (an) at (0,1) {$\vee$};
+		\node[gate] (bn) at (1,1) {$\vee$};
+		\node[gate] (cn) at (2,1) {$\vee$};
+		\node[gate] (dn) at (3,1) {$\vee$};
+		\node[gate] (en) at (4,1) {$\vee$};
+		
+		\node[gate] (o) at (2,2) {$\wedge$};
+		\node (out) at (2,2.5) {out};
+		
+		\draw[->] (a)--(an);
+		\draw[->] (b)--(bn);
+		\draw[->] (c)--(cn);
+		\draw[->] (d)--(dn);
+		\draw[->] (e)--(en);
+		\draw[->] (a)--(bn);
+		\draw[->] (b)--(cn);
+		\draw[->] (c)--(dn);
+		\draw[->] (d)--(en);
+		\draw[->] (a)--(cn);
+		\draw[->] (b)--(dn);
+		\draw[->] (c)--(en);
+		\draw[->] (c)--(an);
+		\draw[->] (d)--(bn);
+		\draw[->] (e)--(cn);
+		\draw[->] (b)--(an);
+		\draw[->] (c)--(bn);
+		\draw[->] (d)--(cn);
+		\draw[->] (e)--(dn);
+		
+		\draw[->] (an)--(o);
+		\draw[->] (bn)--(o);
+		\draw[->] (cn)--(o);
+		\draw[->] (dn)--(o);
+		\draw[->] (en)--(o); 
+		\end{tikzpicture}	
+	\end{center}
+	Setting an input node to $1$ corresponds to adding the corresponding vertex to the independent set / dominating set.
+
+\end{frame}
+
+\begin{frame}{W-hardness}
+	
+	\begin{definition}
+		Let $t\in \{1,2,\dots\}$.\\
+		A parameterized decision problem $\Pi$ is \alert{$\W[t]$-hard} if for every parameterized decision problem $\Pi'$ in $\W[t]$, there is a parameterized reduction from $\Pi'$ to $\Pi$.\\
+		$\Pi$ is \alert{$\W[t]$-complete} if $\Pi \in \W[t]$ and $\Pi$ is $\W[t]$-hard.
+	\end{definition}
+	
+	\pause
+	\begin{theorem}[\cite{DowneyF95II}]
+		\textsc{Independent Set} is $\W[1]$-complete.
+	\end{theorem}
+	
+	\begin{theorem}[\cite{DowneyF95I}]
+		\textsc{Dominating Set} is $\W[2]$-complete.
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{Proving W-hardness}
+	
+	To show that a parameterized decision problem $\Pi$ is $\W[t]$-hard:
+	\begin{itemize}
+		\item Select a $\W[t]$-hard problem $\Pi'$
+		\item Show that $\Pi' \le_{\FPT} \Pi$ by designing a parameterized reduction from $\Pi'$ to $\Pi$
+		\begin{itemize}
+			\item Design an algorithm, that, for any instance $I'$ of $\Pi'$ with parameter $k'$, produces an equivalent instance $I$ of $\Pi$ with parameter $k$
+			\item Show that $k$ is upper bounded by a function of $k'$
+			\item Show that there exists a function $f$ such that the running time of the algorithm is $f(k') \cdot |I'|^{O(1)}$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\section{Case study}
+
+\begin{frame}{Clique}
+	
+ \noindent
+ A \alert{clique} in a graph $G=(V,E)$ is a subset of its vertices $S\subseteq V$ such that every two vertices from $S$ are adjacent in $G$.
+ 
+ \pbDef{\textsc{Clique}}
+ {Graph $G=(V,E)$, integer $k$}
+ {$k$}
+ {Does $G$ have a clique of size $k$?}
+ 
+ \begin{center}
+ 	\begin{tikzpicture}[scale=1]
+ 	
+ 	\draw (0,0) node[vertex] (v1) {};
+ 	\draw (1,0) node[selected] (v2) {};
+ 	\draw (2,0) node[selected] (v3) {};
+ 	\draw (3,0) node[vertex] (v4) {};
+ 	\draw (4,0) node[vertex] (v5) {};
+ 	\draw (0,1) node[vertex] (v6) {};
+ 	\draw (1,1) node[selected] (v7) {};
+ 	\draw (3,1) node[vertex] (v8) {};
+ 	\draw (4,1) node[vertex] (v9) {};
+ 	
+ 	\draw[very thick] (v6)--(v1)--(v7)--(v8)--(v4)--(v5)--(v9) (v7)--(v2)--(v3);
+ 	\draw[very thick] (v6)--(v7)--(v3) (v8)--(v9)--(v4);
+ 	\end{tikzpicture}
+ \end{center}
+ 
+ \begin{itemize}
+ 	\item We will show that \textsc{Clique} is $\W[1]$-hard by a parameterized reduction from \textsc{Independent Set}.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Clique is W[1]-hard}}
+	
+	\begin{lemma}
+		\textsc{Independent Set} $\le_{\FPT}$ \textsc{Clique}.
+	\end{lemma}
+	\begin{proof}
+		Given any instance $(G=(V,E),k)$ for \textsc{Independent Set}, we need to describe an \FPT\ algorithm that constructs an equivalent instance $(G',k')$ for \textsc{Clique} such that $k'\le g(k)$ for some computable function $g$.
+		
+		\pause
+		\noindent
+		\textbf{Construction.}
+		Set $k' \leftarrow k$ and $G' \leftarrow %\overline{G}$, where
+		\overline{G} = (V,\{uv : u,v \in V, u\ne v, uv\notin E\})$.
+		
+		\pause
+		\noindent
+		\textbf{Equivalence.}
+		We need to show that $(G,k)$ is a \Yes-instance for \textsc{Independent Set} if and only if $(G',k')$ is a \Yes-instance for \textsc{Clique}.\newline
+		\pause
+		$(\Rightarrow)$: Let $S$ be an independent set of size $k$ in $G$. For every two vertices $u,v\in S$, we have that $uv \notin E$. Therefore, $uv\in E(\overline{G})$ for every two vertices in $S$. We conclude that $S$ is a clique of size $k$ in $\overline{G}$.\newline
+		\pause
+		$(\Leftarrow)$: Let $S$ be a clique of size $k$ in $\overline{G}$. By a similar argument, $S$ is an independent set of size $k$ in $G$.
+		
+		\pause
+		\noindent
+		\textbf{Parameter.}
+		$k' \le k$.
+		
+		\pause
+		\noindent
+		\textbf{Running time.}
+		The construction can clearly be done in \FPT\ time, and even in polynomial time.
+	\end{proof}
+	
+\end{frame}
+
+\begin{frame}
+	\slides{\frametitle{Clique is W[1]-hard II}}
+
+	\begin{corollary}
+		\textsc{Clique} is $\W[1]$-hard
+	\end{corollary}	
+
+\end{frame}
+
+
+\section{Further Reading}
+
+\begin{frame}
+ \slides{\frametitle{Further Reading}}
+
+  \begin{itemize}
+   
+   \item Chapter 13, \emph{Fixed-parameter Intractability} in \cite{CyganFKL+15}
+%   Marek Cygan, Fedor V.\ Fomin, \L ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel Marx, Marcin Pilipczuk, Micha\l Pilipczuk, and Saket Saurabh. Parameterized Algorithms. Springer, 2015.
+   \item Chapter 13, \emph{Parameterized Complexity Theory} in \cite{Niedermeier06}
+%   Rolf Niedermeier. Invitation to Fixed Parameter Algorithms. Oxford University Press, 2006.
+   \item Elements of Chapters 20--23 in \cite{DowneyF13}
+%         Rodney G. Downey and Michael R. Fellows. Fundamentals of Parameterized Complexity. Springer, 2013.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t, allowframebreaks]
+\slides{\frametitle{References}}
+\printbibliography
+\end{frame}
+
+
+\end{document}
