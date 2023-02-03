@@ -1,0 +1,369 @@
+%!TEX root = ../out/12-ETH-SL.tex
+
+\begin{document}
+
+\mytitle{Exponential Time Hypothesis}{Exponential Time Hypothesis}
+
+\section{SAT and k-SAT}
+
+\begin{frame}
+	\frametitle{SAT}
+	
+  \pbDef{\SAT}{A propositional formula $F$ in conjunctive normal form (CNF)}{$n=|\var(F)|$, the number of variables in $F$}{Is there an assignment to $\var(F)$ satisfying all clauses of $F$?}
+  \pbDef{$k$-\SAT}{A CNF formula $F$ where each clause has length at most $k$}{$n=|\var(F)|$, the number of variables in $F$}{Is there an assignment to $\var(F)$ satisfying all clauses of $F$?}
+  
+  \noindent
+  \textbf{Example}:
+  \begin{align*}
+  	(\textcolor{Green}{x_1} \vee \textcolor{red}{x_2}) \wedge (\neg \textcolor{red}{x_2} \vee \textcolor{Green}{x_3} \vee \neg \textcolor{red}{x_4}) \wedge
+  	(\textcolor{Green}{x_1} \vee \textcolor{red}{x_4}) \wedge (\neg \textcolor{Green}{x_1} \vee \neg \textcolor{Green}{x_3} \vee \neg \textcolor{red}{x_4})
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Algorithms for \SAT}
+	
+	\begin{itemize}
+		\item Brute-force: $O^*(2^n)$
+		\pause
+		\item ... after $>50$ years of SAT solving\\
+		      (SAT association, SAT conference, JSAT journal, annual SAT competitions, ...)
+		\pause
+		\item fastest known algorithm for SAT: $O^*(2^{n\cdot(1-1/O(\log m/n))})$, where $m$ is the number of clauses \cite{CalabroIP06} \cite{DantsinH09}
+		\item However: no $O^*(1.9999^n)$ time algorithm is known
+		\item \lecturenotes{fastest }known algorithms for 3-SAT: $O^*(1.3280^n)$ deterministic \cite{Liu18} and $O^*(1.3070^n)$ randomized \cite{HansenKZZ19}
+		\pause
+		\medskip
+		\item Could it be that 3-SAT cannot be solved in $2^{o(n)}$ time?
+		\item Could it be that SAT cannot be solved in $O^*((2-\epsilon)^n)$ time for any $\epsilon>0$?
+	\end{itemize}
+\end{frame}
+
+\section{Subexponential time algorithms}
+
+\begin{frame}
+	\frametitle{NP-hard problems in subexponential time?}
+	
+	\begin{itemize}
+		\item Are there any NP-hard problems that can be solved in $2^{o(n)}$ time?
+		\pause
+		\item \textbf{Yes}. For example, \textsc{Independent Set} is \NP-complete even when the input graph is planar (can be drawn in the plane without edge crossings). Planar graphs have treewidth $O(\sqrt{n})$ and tree decompositions of that width can be found in polynomial time (``Planar separator theorem'' \mycite{Lipton, Tarjan, 1979}). Using a tree decomposition based algorithm, \textsc{Independent Set} can be solved in $2^{O(\sqrt{n})}$ time on planar graphs.
+	\end{itemize}
+\end{frame}
+
+\section{ETH and SETH}
+
+\begin{frame}
+ \slides{\frametitle{ETH and SETH}}
+ \begin{definition}
+  For each $k\ge 3$, define \alert{$\delta_k$} to be the infinimum\footnote[frame]{The infinimum of a set of numbers is the largest number that is smaller or equal to each number in the set. E.g., the infinimum of $\{\varepsilon \in \mathbb{R} : \varepsilon>0\}$ is $0$.} of the set of constants $c$ such that $k$-SAT can be solved in $O^*(2^{c\cdot n})$ time.
+ \end{definition}
+ 
+ \begin{conjecture}[Exponential Time Hyphothesis (ETH)]
+  $\delta_3>0$.
+ \end{conjecture}
+
+ \begin{conjecture}[Strong Exponential Time Hyphothesis (SETH)]
+  $\lim_{k\rightarrow \infty}\delta_k=1$.
+ \end{conjecture}
+ 
+ \noindent
+ \textbf{Notes}: (1) ETH $\Rightarrow$ 3-SAT cannot be solved in $2^{o(n)}$ time.\\
+ SETH $\Rightarrow$ SAT cannot be solved in $O^*((2-\epsilon)^n)$ time for any $\epsilon>0$.
+
+\end{frame}
+
+\section{Algorithmic lower bounds based on ETH}
+
+\begin{frame}
+ \slides{\frametitle{Algorithmic lower bounds based on ETH}}
+ 
+ \begin{itemize}
+  \item Suppose ETH is true
+  \item Can we infer lower bounds on the running time needed to solve other problems?
+ \pause
+  \item Suppose there is a polynomial-time reduction from 3-SAT to a graph problem $\Pi$, which constructs an equivalent instance where the number of vertices of the output graph equals the number of variables of the input formula, $|V|=|\var(F)|$.
+  \item Using the reduction, we can conclude that, if $\Pi$ has an $O^*(2^{o(|V|)})$ time algorithm, then 3-SAT has an $O^*(2^{o(|\var(F)|)})$ time algorithm, contradicting ETH.\\
+  \item Therefore, we conclude that $\Pi$ has no $O^*(2^{o(|V|)})$ time algorithm unless ETH fails.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Sparsification Lemma}
+ 
+ \noindent
+ \textbf{Issue}: Many reductions from 3-SAT create a number of vertices / variables / elements that are related to the number of \alert{clauses} of the 3-SAT instance.
+ 
+ \pause
+ \begin{theorem}[Sparsification Lemma, \cite{ImpagliazzoPZ01}]
+  For each $\varepsilon > 0$ and positive integer $k$, there is a $O^*(2^{\varepsilon \cdot n})$ time algorithm that takes as input a $k$-CNF formula $F$ with $n$ variables and outputs an equivalent formula $F'=\bigvee_{i=1}^t F_i$ that is a disjunction of $t\le 2^{\varepsilon n}$ formulas $F_i$ with $\var(F_i)=\var(F)$ and $|\cla(F_i)| = O(n)$.
+ \end{theorem}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{3-SAT with a linear number of clauses}
+ 
+ \begin{corollary}
+  ETH $\Rightarrow$ 3-SAT cannot be solved in $O^*(2^{o(n+m)})$ time where $m$ denotes the number of clauses of $F$.
+ \end{corollary}
+ 
+ \noindent
+ \textbf{Observation}: Let $A$, $B$ be parameterized problems and $f$, $g$ be non-decreasing functions.\\
+ Suppose there is a polynomial-time reduction from $A$ to $B$ such that if the parameter of an instance of $A$ is $k$, then the parameter of the constructed instance of $B$ is at most $g(k)$.\\
+ Then an $O^*(2^{o(f(k))})$ time algorithm for $B$ implies an $O^*(2^{o(f(g(k)))})$ time algorithm for $A$.
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{More general reductions are possible}
+ 
+ \begin{definition}[SERF-reduction]
+  A \alert{SubExponential Reduction Family} from a parameterized problem $A$ to a parameterized problem $B$ is a family of \alert{Turing reductions} from $A$ to $B$ (i.e., an algorithm for $A$, making queries to an \alert{oracle} for $B$ that solves any instance for $B$ in constant time) for each $\varepsilon >0$ such that
+  \begin{itemize}
+   \item for every instance $I$ for $A$ with parameter $k$, the running time is $O^*(2^{\varepsilon k})$, and
+   \item for every query $I'$ to $B$ with parameter $k'$, we have that $k' \in O(k)$ and $|I'|=|I|^{O(1)}$.
+  \end{itemize}
+ \end{definition}
+
+ \noindent
+ \textbf{Note}: If $A$ is SERF-reducible to $B$ and $A$ has no $2^{o(k)}$ time algorithm, then $B$ has no $2^{o(k')}$ time algorithm.
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Vertex Cover has no subexponential algorithm}
+
+ \pause
+ \noindent
+ Polynomial-time reduction from 3-SAT.\newline
+ For simplicity, assume all clauses have length $3$.\newline
+ 3-CNF Formula $F=(\textcolor{Green}{u} \vee \textcolor{red}{v} \vee \neg \textcolor{Green}{y}) \wedge 
+	(\neg \textcolor{Green}{u}\vee \textcolor{Green}{y}\vee \textcolor{Green}{z}) \wedge
+	(\neg \textcolor{red}{v}\vee \textcolor{Green}{w}\vee \textcolor{red}{x}) \wedge
+	(\textcolor{red}{x}\vee \textcolor{Green}{y}\vee \neg \textcolor{Green}{z})$ %$F=\{C,D,E,F,G\}$ where  
+%  $C= \{u, v, \neg y\}$, 
+%  $D= \{\neg u, z\}$, 
+%  $E= \{\neg v, w\}$, 
+%  $F= \{\neg w, x\}$, 
+%  $G= \{x, y, \neg z\}$.
+
+\pause
+\begin{center}
+\begin{tikzpicture}[scale=.8]
+ %\tikzstyle{every node}=[circle, inner sep=0pt]
+ \pgfsetbaseline{-1.5cm}
+
+\draw (0,0) node[vertex,label=above:$\neg u$] (nu) {};
+\draw (1,0) node[selected,label=above:$u$] (u) {};
+\draw (2,0) node[selected,label=above:$\neg v$] (nv) {};
+\draw (3,0) node[vertex,label=above:$v$] (v) {};
+\draw (4,0) node[vertex,label=above:$\neg w$] (nw) {};
+\draw (5,0) node[selected,label=above:$w$] (w) {};
+\draw (6,0) node[selected,label=above:$\neg x$] (nx) {};
+\draw (7,0) node[vertex,label=above:$x$] (x) {};
+\draw (8,0) node[vertex,label=above:$\neg y$] (ny) {};
+\draw (9,0) node[selected,label=above:$y$] (y) {};
+\draw (10,0) node[vertex,label=above:$\neg z$] (nz) {};
+\draw (11,0) node[selected,label=above:$z$] (z) {};
+
+\draw (0.75,-4) node[vertex] (Cu) {};
+\draw (1.25,-3) node[selected] (Cv) {};
+\draw (1.75,-4) node[selected] (Cy) {};
+\draw (3.25,-4) node[selected] (Du) {};
+\draw (3.75,-3) node[selected] (Dy) {};
+\draw (4.25,-4) node[vertex] (Dz) {};
+\draw (5.75,-4) node[vertex] (Ev) {};
+\draw (6.25,-3) node[selected] (Ew) {};
+\draw (6.75,-4) node[selected] (Ex) {};
+\draw (8.25,-4) node[selected] (Fx) {};
+\draw (8.75,-3) node[vertex] (Fy) {};
+\draw (9.25,-4) node[selected] (Fz) {};
+
+\draw[thick] 
+(nu)--(u) 
+(nv)--(v) 
+(nw)--(w) 
+(nx)--(x) 
+(ny)--(y) 
+(nz)--(z);
+
+\draw[thick] 
+(Cu)--(Cv)--(Cy)--(Cu) 
+(Du)--(Dy)--(Dz)--(Du) 
+(Ev)--(Ew)--(Ex)--(Ev)
+(Fx)--(Fy)--(Fz)--(Fx);
+
+\draw[thick]
+(u)--(Cu) (Cv)--(v) (ny)--(Cy)
+(nu)--(Du) (Dz)--(z) (y)--(Dy)
+(nv)--(Ev) (Ew)--(w) (Ex)--(x)
+(x)--(Fx) (Fy)--(y) (nz)--(Fz);
+
+  \end{tikzpicture}
+\end{center}
+
+\noindent
+For a 3-CNF formula with $n$ variables and $m$ clauses, we create a \textsc{Vertex Cover} instance with
+$|V| = 2n+3m$, $|E| = n+6m$, and $k=n+2m$.
+
+\end{frame}
+
+\begin{frame}
+ \slides{\frametitle{Vertex Cover has no subexponential algorithm II}}
+
+% \begin{theorem}
+%  ETH $\Rightarrow$ \textsc{Vertex Cover} has no $2^{o(|V|)}$ time algorithm.
+% \end{theorem}
+% \begin{theorem}
+%  ETH $\Rightarrow$ \textsc{Vertex Cover} has no $2^{o(|E|)}$ time algorithm.
+% \end{theorem}
+% \begin{theorem}
+%  ETH $\Rightarrow$ \textsc{Vertex Cover} has no $2^{o(k)}$ time algorithm.
+% \end{theorem}
+ \begin{theorem}
+	ETH $\Rightarrow$ \textsc{Vertex Cover} has no $2^{o(|V|+|E|+k)}$ time algorithm.
+ \end{theorem}
+
+\end{frame}
+
+\section{Algorithmic lower bounds based on SETH}
+
+\begin{frame}{Hitting Set}
+	
+	\noindent
+	\textbf{Recall}: A \alert{hitting set} of a set system $\mathcal{S}=(V,H)$ is a subset $X$ of $V$ such that $X$ contains at least one element of each set in $H$, i.e., $X\cap Y \ne \emptyset$ for each $Y\in H$. 
+	
+	\pbDef{\textsf{elts}-\textsc{Hitting Set}}{A set system $\mathcal{S}=(V,H)$ and an integer $k$}{$n=|V|$}{Does $\mathcal{S}$ have a hitting set of size at most $k$?}
+	
+	\begin{center}
+		\begin{tikzpicture} %[scale=1.2]
+		%\begin{scope}[shape=circle,minimum size=0.2cm]
+		%\tikzstyle{every node}=[fill=black]
+		\node[vertex]       (a) at (0,1) {};
+		\node[vertex]                 (b) at (1,1) {};
+		\node[vertex]                 (c) at (2,1) {};
+		\node[selected]                 (d) at (3,1) {};
+		\node[selected]                 (e) at (0,0) {};
+		\node[vertex]       (f) at (1,0) {};
+		\node[selected]                 (g) at (2,0) {};
+		\node[vertex]       (h) at (3,0) {};
+		%\end{scope}
+		%\draw[line width=2pt]     (a) -- (b) -- (e) -- (h) -- (g) -- (f) -- (d) -- (g) -- (e) -- (a) -- (c) -- (d) -- (a);
+		\draw plot[smooth cycle] coordinates{(0.7,1.3) (2.3,1.3) (2.3,-0.3) (0.7,-0.3)};
+		\draw plot[smooth cycle] coordinates{(-0.3,1.3) (0.3,1.3) (0.3,-0.3) (-0.3,-0.3)};
+		\draw plot[smooth cycle] coordinates{(1.7,0.3) (3.3,0.3) (3.3,-0.3) (1.7,-0.3)};
+		\draw plot[smooth cycle] coordinates{(1.7,1.3) (3.3,1.3) (3.3,-0.3) (2.7,-0.3) (1.7,0.7)};
+		\draw plot[smooth cycle] coordinates{(1.3,1.3) (1.3,-0.3) (-0.3,-0.3) (-0.3,0.3) (0.7,1.3)};
+		
+		\end{tikzpicture}
+		
+	\end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{SETH-lower bound for Hitting Set}
+ 
+ CNF Formula $F=(\textcolor{Green}{u} \vee \textcolor{red}{v} \vee \neg \textcolor{Green}{y}) \wedge 
+	(\neg \textcolor{Green}{u}\vee \textcolor{Green}{y}\vee \textcolor{Green}{z}) \wedge
+	(\neg \textcolor{red}{v}\vee \textcolor{Green}{w}\vee \textcolor{red}{x}) \wedge
+	(\textcolor{red}{x}\vee \textcolor{Green}{y}\vee \neg \textcolor{Green}{z})$ %$F=\{C,D,E,F,G\}$ where  
+%  $C= \{u, v, \neg y\}$, 
+%  $D= \{\neg u, z\}$, 
+%  $E= \{\neg v, w\}$, 
+%  $F= \{\neg w, x\}$, 
+%  $G= \{x, y, \neg z\}$.
+
+Inidence graph of equivalent Hitting Set instance:
+
+\begin{center}
+\begin{tikzpicture}[scale=.85]
+ \tikzstyle{every node}=[inner sep=1pt]
+ \pgfsetbaseline{-1.5cm}
+
+\draw (0,0) node[vertex,label=above left:$\neg u$] (nu) {};
+\draw (1,0) node[selected,label=above right:$u$] (u) {};
+\draw (2,0) node[selected,label=below left:$\neg v$] (nv) {};
+\draw (3,0) node[vertex,label=below right:$v$] (v) {};
+\draw (4,0) node[vertex,label=above left:$\neg w$] (nw) {};
+\draw (5,0) node[selected,label=above right:$w$] (w) {};
+\draw (6,0) node[selected,label=below left:$\neg x$] (nx) {};
+\draw (7,0) node[vertex,label=below right:$x$] (x) {};
+\draw (8,0) node[vertex,label=above left:$\neg y$] (ny) {};
+\draw (9,0) node[selected,label=above right:$y$] (y) {};
+\draw (10,0) node[vertex,label=below left:$\neg z$] (nz) {};
+\draw (11,0) node[selected,label=below right:$z$] (z) {};
+
+\draw (0.5,2) node[vertex] (cu) {};
+\draw (2.5,2) node[vertex] (cv) {};
+\draw (4.5,2) node[vertex] (cw) {};
+\draw (6.5,2) node[vertex] (cx) {};
+\draw (8.5,2) node[vertex] (cy) {};
+\draw (10.5,2) node[vertex] (cz) {};
+
+\draw (1.25,-3) node[vertex] (C) {};
+\draw (3.75,-3) node[vertex] (D) {};
+\draw (6.25,-3) node[vertex] (E) {};
+\draw (8.75,-3) node[vertex] (F) {};
+
+\node at (-2,2) {sets};
+\node at (-2,0) {elts};
+\node at (-2,-3) {sets};
+
+
+\draw[thick] 
+(nu)--(cu)--(u) 
+(nv)--(cv)--(v) 
+(nw)--(cw)--(w) 
+(nx)--(cx)--(x) 
+(ny)--(cy)--(y) 
+(nz)--(cz)--(z);
+
+\draw[thick]
+(u)--(C) (C)--(v) (ny)--(C)
+(nu)--(D) (D)--(z) (y)--(D)
+(nv)--(E) (E)--(w) (E)--(x)
+(x)--(F) (F)--(y) (nz)--(F);
+
+  \end{tikzpicture}
+\end{center}
+
+\noindent
+For a CNF formula with $n$ variables and $m$ clauses, we create a \textsc{Hitting Set} instance with
+$|V| = 2n$ and $k=n$.
+\end{frame}
+
+
+\begin{frame}
+ \slides{\frametitle{SETH-lower bound for Hitting Set}}
+
+ \begin{theorem}
+  SETH $\Rightarrow$ \textsc{Hitting Set} has no $O^*((2-\varepsilon)^{|V|/2})$ time algorithm for any $\varepsilon>0$.
+ \end{theorem}
+ \noindent
+ \textbf{Note}: With a more ingenious reduction, one can show that \textsc{Hitting Set} has no $O^*((2-\varepsilon)^{|V|})$ time algorithm for any $\varepsilon>0$ under SETH \cite{CyganDLMNOPSW16}.
+\end{frame}
+
+\section{Further Reading}
+
+\begin{frame}
+ \slides{\frametitle{Further Reading}}
+
+ \begin{itemize}
+   \item Chapter 14, \emph{Lower bounds based on the Exponential-Time Hypothesis} in \cite{CyganFKL+15}
+%   Marek Cygan, Fedor V.\ Fomin, \L ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel Marx, Marcin Pilipczuk, Micha\l Pilipczuk, and Saket Saurabh. Parameterized Algorithms. Springer, 2015.
+ 	\item Section 11.3, \emph{Subexponential Algorithms and ETH} in \cite{FominK10}
+% 	Fedor V. Fomin and Dieter Kratsch. Exact Exponential Algorithms. Springer, 2010.
+ 	\item Section 29.5, \emph{The Sparsification Lemma} in \cite{DowneyF13}
+% 	Rodney G. Downey and Michael R. Fellows. Fundamentals of Parameterized Complexity. Springer, 2013.
+ \end{itemize}
+
+\end{frame}
+
+\begin{frame}[t, allowframebreaks]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+
+\end{document}

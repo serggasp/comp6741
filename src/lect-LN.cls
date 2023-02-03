@@ -109,3 +109,18 @@
 
 \newcommand{\slides}[1]{}
 \newcommand{\lecturenotes}[1]{#1}
+
+
+\newcommand{\mytitle}[2]{
+	\title[#1]{#2}
+
+	% \begin{frame}
+	% 	\titlepage{}
+	% \end{frame}
+
+	\maketitle
+
+	% \begin{frame}
+		\tableofcontents
+	% \end{frame}
+}

@@ -117,3 +117,17 @@
 
 \newcommand{\slides}[1]{#1}
 \newcommand{\lecturenotes}[1]{}
+
+
+\newcommand{\mytitle}[2]{
+	\title[#1]{#2}
+
+	\begin{frame}
+		\titlepage{}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Outline}
+		\tableofcontents
+	\end{frame}
+}

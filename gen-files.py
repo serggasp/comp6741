@@ -10,7 +10,11 @@ chapters = [
     "07-branch",
     "08-MC",
     "09-RA",
-    "10-TW"
+    "10-TW",
+    "11-Quantum",
+    "12-ETH",
+    "13-HLS",
+    "14-review"
 ]
 
 for c in chapters:

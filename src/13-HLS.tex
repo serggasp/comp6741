@@ -1,0 +1,70 @@
+%!TEX root = ../out/13-HLS-SL.tex
+
+\begin{document}
+
+\mytitle{Heuristics and Local Search}{Heuristics and Local Search}
+
+\section{Introduction}
+
+\begin{frame}
+	\frametitle{Optimisation problems}
+
+  Recall:
+  	\begin{definition}
+  		An \alert{optimisation problem} is characterised by
+  		\begin{itemize}
+  			\item a set of input instances
+  			\item a set of \alert{feasible solutions} for each input instance
+  			\item a \alert{value} for each feasible solution
+  		\end{itemize}
+  		In a \alert{maximisation} problem (resp., a \alert{minimisation}) problem, the goal is to find a feasible solution with maximum (resp., minimum) value.
+  	\end{definition}
+  	
+  	\noindent \textbf{Example:}
+  	In the \textsc{Graph Coloring} minimisation problem, the input is a graph $G$, the feasible solutions are all the proper colorings of $G$, and the value of a coloring is its number of colors.
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Heuristics}
+	
+	\begin{itemize}
+		\item return a feasible solution
+		\item typically, there is no guarantee on the value of the solution returned by the heuristic
+		\item ideally, they are fast, easy to implement, and return satisfactory solutions for many instances
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Local Search}
+	
+	\begin{itemize}
+		\item Given a feasible solution $S$, a local search algorithm explores whether there is an improved feasible solution $S^*$ that can be obtained from $S$ by a ``small modification''.
+	\end{itemize}
+\end{frame}
+
+
+\section{Case study: graph coloring}
+
+\begin{frame}
+	Discussion on \cite{HartungN13}.
+	
+	\slides{\vspace{8cm}}
+\end{frame}
+
+\section{Case study: treewidth}
+
+\begin{frame}
+	Discussion on \cite{GaspersGJMR19}.
+	
+	\slides{\vspace{8cm}}
+\end{frame}
+
+
+\begin{frame}[t, allowframebreaks]
+	\slides{\frametitle{References}}
+	\printbibliography
+\end{frame}
+
+
+\end{document}

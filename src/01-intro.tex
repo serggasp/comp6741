@@ -4,24 +4,11 @@
 
 \begin{document}
 
-\title[Introduction]
-{Introduction to solving intractable problems}
-
-\begin{frame}
-	\titlepage{}
-\end{frame}
-
-\lecturenotes{\maketitle}
-
-\begin{frame}
-	\slides{\frametitle{Outline}}
-	\tableofcontents
-\end{frame}
+\mytitle{Introduction}{Introduction to solving intractable problems}
 
 \section{Algorithms for NP-hard problems}
 
 \begin{frame}
-
 	Central question
 	\begin{center}
 		{\huge $\P$ vs. $\NP$}
@@ -104,9 +91,11 @@
 		      \begin{itemize}
 			      \item \textsc{Vertex Cover} can be solved in polynomial time on bipartite graphs, trees, interval graphs, etc.~\cite{Golumbic04}.
 		      \end{itemize}
-		\item Quantum algorithms?
+		\item Quantum algorithms
 		      \begin{itemize}
-			      \item Not believed to solve \NP-hard problems in polynomial time~\cite{Aaronson05}. Quadratic speedup possible in some cases.
+			      \item Not believed to solve \NP-hard problems in polynomial time~\cite{Aaronson05}.
+				  \item Quadratic speedup in some cases \cite{AmbainisK17,Furer08}.
+				        There is a quantum algorithm solving \textsc{Vertex Cover} in time $O(1.0941^n)$.
 		      \end{itemize}
 	\end{itemize}
 \end{frame}
