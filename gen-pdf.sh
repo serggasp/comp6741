@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+mkdir -p pdf
+
 cp ./out/*.pdf ./pdf/
 
 # handle SLides
