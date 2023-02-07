@@ -13,3 +13,5 @@ Once compiled, use `gen-pdf.sh` to copy the pdf files into the folder `./pdf/`, 
     alt="Contribute with Gitpod"
   />
 </a>
+
+Lecture videos are available on <a href="https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9">Youtube</a>.
