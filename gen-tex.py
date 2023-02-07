@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 chapters = [
     "01-intro",
     "02-np",
@@ -16,6 +18,9 @@ chapters = [
     "13-HLS",
     "14-review"
 ]
+
+if not os.path.exists('out'):
+   os.makedirs('out')
 
 for c in chapters:
     f = open(f'./out/{c}-SL.tex', "w")
