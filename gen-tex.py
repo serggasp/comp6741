@@ -13,8 +13,8 @@ chapters = [
     "08-MC",
     "09-RA",
     "10-TW",
-    "11-Quantum",
-    "12-ETH",
+    "11-ETH",
+    "12-Quantum",
     "13-HLS",
     "14-review"
 ]
