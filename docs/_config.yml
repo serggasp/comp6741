@@ -1,3 +1,7 @@
 remote_theme: pages-themes/slate@v0.2.0
+title: COMP6741 - Algorithms for Intractable Problems
+description: Course webpage for UNSW's COMP6741 - Algorithms for Intractable Problems
+show_downloads: false
+
 plugins:
 - jekyll-remote-theme
