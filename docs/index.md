@@ -15,48 +15,14 @@
     
 # Hall of fame
 
-## 2023
-1. Anders Mah
-2. Redmond Mobbs  
-Zixu He
-
-## 2022
-1. Angus Ritossa
-2. Charran Kethees
-3. Jeffrey Yang  
-Sean Zammit
-
-## 2020
-1. Ian Dunkerley  
-Ethan Brown
-3. Daniel Woolnough
-
-## 2019
-1. Madeleine Kyng
-2. Louis Cheung
-3. Andrew Ross
-
-## 2018
-1. Brittany Evat
-2. Joshua Lau
-3. Adrian Goldwaser
-
-## 2017
-1. David Coates
-2. Suganya Suresh
-3. Felix Abrahamsson
-
-## 2016
-1. Mohammad Huda
-2. Andrew Semler
-3. Michael Chen
-
-## 2015
-1. Ray Li  
-Oliver Fisher\
-3\. Magnus Hagmar
-
-## 2014
-1. Mitchell Ward
-2. Alexis Shaw  
-Ben Edser
+| Year | Top students |
+|:-----|:-------------|
+| 2023 | 1. Anders Mah<br>2. Redmond Mobbs<br>2. Zixu He |
+| 2022 | 1. Angus Ritossa<br>2. Charran Kethees<br>3. Jeffrey Yang<br>3. Sean Zammit|
+| 2020 | 1. Ian Dunkerley<br>1. Ethan Brown<br>3. Daniel Woolnough|
+| 2019 | 1. Madeleine Kyng<br>2. Louis Cheung<br>3. Andrew Ross|
+| 2018 | 1. Brittany Evat<br>2. Joshua Lau<br>3. Adrian Goldwaser|
+| 2017 | 1. David Coates<br>2. Suganya Suresh<br>3. Felix Abrahamsson|
+| 2016 | 1. Mohammad Huda<br>2. Andrew Semler<br>3. Michael Chen|
+| 2015 | 1. Ray Li<br>1. Oliver Fisher<br>3. Magnus Hagmar|
+| 2014 | 1. Mitchell Ward<br>2. Alexis Shaw<br>2. Ben Edser|
