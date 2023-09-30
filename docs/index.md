@@ -27,8 +27,8 @@ Zixu He
 Sean Zammit
 
 ## 2020
-1. Ian Dunkerley
-2. Ethan Brown
+1. Ian Dunkerley  
+Ethan Brown
 3. Daniel Woolnough
 
 ## 2019
@@ -53,7 +53,7 @@ Sean Zammit
 
 ## 2015
 1. Ray Li  
-Oliver Fisher
+Oliver Fisher\
 3\. Magnus Hagmar
 
 ## 2014
