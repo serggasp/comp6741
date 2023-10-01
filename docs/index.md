@@ -1,7 +1,12 @@
 # Resources
 
+* [Prerequisites](./prereq.pdf)
+* [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline)
 * [Lecture slides and notes](https://github.com/serggasp/comp6741/releases)
 * [Lecture videos](https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9&feature=shared)
+* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320)
+* [Forum](https://edstem.org/au/join/SxmM5z)
+* [Glossary](./glossary.pdf)
 
 # Frequently Asked Questions
 
