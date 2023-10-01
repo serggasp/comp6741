@@ -1,5 +1,5 @@
 # comp6741
-Lecture notes for COMP6741 - Algorithms for intractable problems
+Lecture notes for UNSW's course COMP6741 - Algorithms for intractable problems
 
 Use `gen-tex.py` to generate, for each lecture, a simple file ending in `-SL.tex` for the slideshow and a simple file ending in `-LN.tex` for the lecture notes in the folder `./out/`.
 
@@ -14,4 +14,4 @@ Once compiled, use `gen-pdf.sh` to copy the pdf files into the folder `./pdf/`, 
   />
 </a>
 
-Lecture videos are available on <a href="https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9">Youtube</a>.
+See the <a href="https://serggasp.github.io/comp6741/">course webpage</a> for more information about the course and links to lecture videos.
