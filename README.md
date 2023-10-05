@@ -14,4 +14,4 @@ Once compiled, use `gen-pdf.sh` to copy the pdf files into the folder `./pdf/`, 
   />
 </a>
 
-See the <a href="https://serggasp.github.io/comp6741/"> for more information about the course, including links to lecture videos.
+See the <a href="https://serggasp.github.io/comp6741/">course webpage</a> for more information about the course, including links to lecture videos.
