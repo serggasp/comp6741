@@ -1,12 +1,15 @@
-# Resources
+# COMP6741 Resources
 
-* [Prerequisites](./prereq.pdf)
-* [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline)
-* [Lecture slides and notes](https://github.com/serggasp/comp6741/releases)
-* [Lecture videos](https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9&feature=shared)
-* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320)
-* [Forum](https://edstem.org/au/join/SxmM5z)
-* [Glossary](./glossary.pdf)
+* [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline) gives details about assessments, schedule, staff, etc.
+* [Prerequisites](./prereq.pdf) gives an idea of what you should know before taking this course
+* [Lecture slides and notes](https://github.com/serggasp/comp6741/releases) form the main lecture material
+* [Lecture videos](https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9&feature=shared) present the lecture material
+* [Glossary](./glossary.pdf) contains a quick reference to frequently used terms
+
+# Resources for enroled students
+
+* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, trial exam, and exam
+* [Forum](https://edstem.org/au/join/SxmM5z) is used for announcements and questions and answers
 
 # Frequently Asked Questions
 
@@ -17,8 +20,18 @@
 2. What are the prerequisites?
     
     You should have done [COMP3121/9101](https://www.handbook.unsw.edu.au/undergraduate/courses/2024/COMP3121) or the extended version of that course, [COMP3821/9801](https://www.handbook.unsw.edu.au/undergraduate/courses/2024/COMP3821). The prerequisite knowledge is further detailed in [this pdf](./prereq.pdf).
+
+3. How is the course taught?
+    
+    The course is taught in a flipped-classroom style.
+    Lectures are pre-recorded.
+    During the lecture time slots, we solve tutorial-style exercise sheets, review lecture material that is useful to solve these exercises, explore various approaches to solve (or fail to solve) the exercises, and answer questions about the lecture material.
     
 # Hall of fame
+
+The course has attracted extremely smart and dedicated students over the years.
+The best performers have demonstrated exceptional problem-solving abilities, a mastery of advanced algorithmic techniques for challenging computational problems, and a deep understanding of the analysis of algorithms and the complexity of computational problems.
+The top 3 students in each offering are listed below.
 
 | Year | Top students |
 |:-----|:-------------|
