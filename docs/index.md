@@ -1,4 +1,4 @@
-# COMP6741 Resources
+# Resources
 
 * [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline) gives details about assessments, schedule, staff, etc.
 * [Prerequisites](./prereq.pdf) gives an idea of what you should know before taking this course
