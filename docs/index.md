@@ -27,6 +27,11 @@
     Lectures are pre-recorded.
     During the lecture time slots, we solve tutorial-style exercise sheets, review lecture material that is useful to solve these exercises, explore various approaches to solve (or fail to solve) the exercises, and answer questions about the lecture material.
     
+4. When can I take COMP6741?
+
+    COMP6741 runs in 2024 term 1.
+    In future years, it is planned that the course will run in term 1, but it might not be offered every year.
+
 # Hall of fame
 
 The course has attracted extremely smart and dedicated students over the years.
