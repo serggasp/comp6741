@@ -26,8 +26,15 @@
     The course is taught in a flipped-classroom style.
     Lectures are pre-recorded.
     During the lecture time slots, we solve tutorial-style exercise sheets, review lecture material that is useful to solve these exercises, explore various approaches to solve (or fail to solve) the exercises, and answer questions about the lecture material.
+
+4. How is the course assessed?
+
+    In 2024, there are 3 assignments and 1 final exam.
+    The assignment mark is worth 50\% of the overall mark, composed of two individual assignments (15\% each) and one group assignment (20\%).
+    The final exam is worth 50\% and is run on Inspera.
+    Bonus marks are possible in case of exceptional performance.
     
-4. When can I take COMP6741?
+5. When can I take COMP6741?
 
     COMP6741 runs in 2024 term 1.
     In future years, it is planned that the course will run in term 1, but it might not be offered every year.
