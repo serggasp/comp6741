@@ -41,8 +41,8 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 4. How is the course assessed?
 
     In 2024, there are 3 assignments and 1 final exam.
-    The assignment mark is worth 50\% of the overall mark, composed of two individual assignments (15\% each) and one group assignment (20\%).
-    The final exam is worth 50\% and is run on Inspera.
+    The assignment mark is worth 50% of the overall mark, composed of two individual assignments (15% each) and one group assignment (20%).
+    The final exam is worth 50% and is run on Inspera.
     Bonus marks are possible in case of exceptional performance.
     
 5. When can I take COMP6741?
