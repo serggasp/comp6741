@@ -22,6 +22,21 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 * [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, trial exam, and exam
 * [Forum](https://edstem.org/au/join/SxmM5z) is used for announcements and questions and answers
 
+# Course schedule
+
+| Week | Topics |
+|:-----|:-------|
+|    1 | Introduction; NP-completeness |
+|    2 | Kernelization; approximation algorithms; (integer) linear programming |
+|    3 | Kernelization; basics of Parameterized Complexity |
+|    4 | Parameterized intractability; branching algorithms |
+|    5 | Branching algorithms; measure & conquer |
+|    6 | - |
+|    7 | Randomized algorithms; treewidth |
+|    8 | Treewidth; quantum algorithms |
+|    9 | Exponential time hypothesis; heuristics and local search |
+|   10 | Group assignment presentations; review |
+
 # Frequently Asked Questions
 
 1. Is COMP6741 a WAM-booster?
