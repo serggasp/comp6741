@@ -19,8 +19,24 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 
 # Resources for enroled students
 
-* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, trial exam, and exam
+* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, and trial exam
 * [Forum](https://edstem.org/au/join/SxmM5z) is used for announcements and questions and answers
+
+# External resources
+
+## Recommended textbooks
+
+* \[CFK+15\] Marek Cygan, Fedor V. Fomin, Lukasz Kowalik, Daniel Lokshtanov, Dániel Marx, Marcin Pilipczuk, Michal Pilipczuk, Saket Saurabh. [Parameterized Algorithms](http://parameterized-algorithms.mimuw.edu.pl/). Springer, 2015.
+* \[FK10\] Fedor V. Fomin and Dieter Kratsch. [Exact Exponential Algorithms](https://folk.uib.no/nmiff/BookEA/). Springer, 2010.
+
+## Additional textbooks
+
+* \[FLSZ19\] Fedor V. Fomin, Daniel Lokshtanov, Saket Saurabh, and Meirav Zehavi. [Kernelization: Theory of Parameterized Preprocessing](https://kernelization.ii.uib.no/). Cambridge University Press, 2019.
+* \[DF13\] Rodney G. Downey and Michael R. Fellows. [Fundamentals of Parameterized Complexity](https://doi.org/10.1007/978-1-4471-5559-1). Springer, 2013. [Link via UNSW library](https://primoa.library.unsw.edu.au/permalink/61UNSW_INST/1m02euc/alma9950697709601731).
+* \[FG06\] Jörg Flum and Martin Grohe. [Parameterized Complexity Theory](https://doi.org/10.1007/3-540-29953-X). Springer-Verlag, 2006.  [Link via UNSW library](https://primoa.library.unsw.edu.au/permalink/61UNSW_INST/1m02euc/alma9950796924801731).
+* \[G10\] Serge Gaspers. [Exponential Time Algorithms: Structures, Measures, and Bounds](https://serggasp.github.io/assets/pdf/SergeBookETA2010_screen.pdf). VDM Verlag Dr. Mueller, 2010.
+* \[N06\] Rolf Niedermeier. [Invitation to Fixed-Parameter Algorithms](https://dx.doi.org/10.1093/acprof:oso/9780198566076.001.0001). Oxford University Press, 2006. [Link via UNSW library](https://primoa.library.unsw.edu.au/permalink/61UNSW_INST/1m02euc/alma9950608106001731).
+* \[V03\] Vijay Vazirani. [Approximation Algorithms](https://doi.org/10.1007/978-3-662-04565-7). Springer, 2003. [Link via UNSW library](https://primoa.library.unsw.edu.au/permalink/61UNSW_INST/1m02euc/alma9950830603001731) [Preprint via author website](https://ics.uci.edu/~vazirani/book.pdf).
 
 # Course schedule
 
