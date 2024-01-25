@@ -24,19 +24,17 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 * [Lecture videos](https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9&feature=shared) present the lecture material
 * [Glossary](./glossary.pdf) contains a quick reference to frequently used terms
 
-# Resources for enroled students
+## for enroled students
 
 * [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, and trial exam
 * [Forum](https://edstem.org/au/join/N7xsp5) is used for announcements and questions and answers.
 
-# External resources
-
-## Recommended textbooks
+## recommended textbooks
 
 * \[CFK+15\] Marek Cygan, Fedor V. Fomin, Lukasz Kowalik, Daniel Lokshtanov, Dániel Marx, Marcin Pilipczuk, Michal Pilipczuk, Saket Saurabh. [Parameterized Algorithms](http://parameterized-algorithms.mimuw.edu.pl/). Springer, 2015.
 * \[FK10\] Fedor V. Fomin and Dieter Kratsch. [Exact Exponential Algorithms](https://folk.uib.no/nmiff/BookEA/). Springer, 2010.
 
-## Additional textbooks
+## additional textbooks
 
 * \[FLSZ19\] Fedor V. Fomin, Daniel Lokshtanov, Saket Saurabh, and Meirav Zehavi. [Kernelization: Theory of Parameterized Preprocessing](https://kernelization.ii.uib.no/). Cambridge University Press, 2019.
 * \[DF13\] Rodney G. Downey and Michael R. Fellows. [Fundamentals of Parameterized Complexity](https://doi.org/10.1007/978-1-4471-5559-1). Springer, 2013. [Link via UNSW library](https://primoa.library.unsw.edu.au/permalink/61UNSW_INST/1m02euc/alma9950697709601731).
