@@ -14,7 +14,7 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 
 # News
 
-* The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
+* 25 Jan 2024: The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
 
 # Resources
 
