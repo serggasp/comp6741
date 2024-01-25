@@ -3,11 +3,11 @@ Welcome to the course webpage for COMP6741!
 <details>
   <summary>Show course description</summary>
 The course focuses on algorithms for solving intractable computational problems, so-called NP-hard problems. Ideally, one would want to design algorithms that solve each instance optimally and in polynomial time. But since no polynomial time algorithm is known for any NP-hard problem, we will relax these requirements and design algorithms that either do not solve the problem optimally, that only solve a subset of instances, or whose worst-case running time is super-polynomial in the input size or some other parameter of the input.
-Among algorithms that do not provide optimal solutions, we discuss heuristics and approximation algorithms. Heuristics have no optimality guarantees but tend to work well in practice. Approximation algorithms give additional guarantees of the quality of computed solution as compared to the optimal solution.
+Among algorithms that do not provide optimal solutions, we discuss heuristics and approximation algorithms. Heuristics have no optimality guarantees but tend to work well in practice. Approximation algorithms give additional guarantees of the quality of computed solution as compared to the optimal solution.<br/>
 
-Among algorithms that only solve a subset of instances, we discuss graph classes where NP-hard graph problems often become polynomial-time solvable when the input is restricted to such graphs.
+Among algorithms that only solve a subset of instances, we discuss graph classes where NP-hard graph problems often become polynomial-time solvable when the input is restricted to such graphs.<br/>
 
-Among algorithms that do not run in polynomial time, we discuss exponential-time algorithms and parameterized algorithms. In exponential-time algorithms we see algorithmic techniques to solve NP-hard problems provably faster than brute-force in the worst case. In parameterized algorithms, a parameter k is associated with each instance and the goal is to design algorithms whose worst-case running time is fast whenever k is small. We will also see lower bounds for problems and how to rule out certain running times under various complexity assumptions.
+Among algorithms that do not run in polynomial time, we discuss exponential-time algorithms and parameterized algorithms. In exponential-time algorithms we see algorithmic techniques to solve NP-hard problems provably faster than brute-force in the worst case. In parameterized algorithms, a parameter k is associated with each instance and the goal is to design algorithms whose worst-case running time is fast whenever k is small. We will also see lower bounds for problems and how to rule out certain running times under various complexity assumptions.<br/>
 
 In addition to deterministic algorithms, we discuss speed-ups if we have access to randomised algorithms or quantum algorithms.
 </details>
