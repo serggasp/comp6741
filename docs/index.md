@@ -9,6 +9,10 @@ Among algorithms that do not run in polynomial time, we discuss exponential-time
 
 In addition to deterministic algorithms, we discuss speed-ups if we have access to randomised algorithms or quantum algorithms.
 
+# News
+
+* The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
+
 # Resources
 
 * [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline) gives details about assessments, schedule, staff, etc.
@@ -20,7 +24,7 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 # Resources for enroled students
 
 * [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, and trial exam
-* [Forum](https://edstem.org/au/join/SxmM5z) is used for announcements and questions and answers
+* [Forum](https://edstem.org/au/join/N7xsp5) is used for announcements and questions and answers.
 
 # External resources
 
