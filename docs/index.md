@@ -87,6 +87,8 @@ In addition to deterministic algorithms, we discuss speed-ups if we have access 
 
 # Hall of fame
 
+<details>
+  <summary>Show Hall of Fame</summary>
 The course has attracted extremely smart and dedicated students over the years.
 The best performers have demonstrated exceptional problem-solving abilities, a mastery of advanced algorithmic techniques for challenging computational problems, and a deep understanding of the analysis of algorithms and the complexity of computational problems.
 The top 3 students in each offering are listed below.
@@ -102,3 +104,4 @@ The top 3 students in each offering are listed below.
 | 2016 | 1. Mohammad Huda<br>2. Andrew Semler<br>3. Michael Chen|
 | 2015 | 1. Ray Li<br>1. Oliver Fisher<br>3. Magnus Hagmar|
 | 2014 | 1. Mitchell Ward<br>2. Alexis Shaw<br>2. Ben Edser|
+</details>
