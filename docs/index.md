@@ -1,7 +1,7 @@
 Welcome to the course webpage for COMP6741!
 
 <details>
-  <summary>Show course description</summary>
+  <summary>Course description</summary>
 <p>The course focuses on algorithms for solving intractable computational problems, so-called NP-hard problems. Ideally, one would want to design algorithms that solve each instance optimally and in polynomial time. But since no polynomial time algorithm is known for any NP-hard problem, we will relax these requirements and design algorithms that either do not solve the problem optimally, that only solve a subset of instances, or whose worst-case running time is super-polynomial in the input size or some other parameter of the input.
 Among algorithms that do not provide optimal solutions, we discuss heuristics and approximation algorithms. Heuristics have no optimality guarantees but tend to work well in practice. Approximation algorithms give additional guarantees of the quality of computed solution as compared to the optimal solution.</p>
 
@@ -88,20 +88,22 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 
 # Hall of fame
 
-
-The course has attracted extremely smart and dedicated students over the years.
+<details>
+  <summary>Show</summary>
+<p>The course has attracted extremely smart and dedicated students over the years.
 The best performers have demonstrated exceptional problem-solving abilities, a mastery of advanced algorithmic techniques for challenging computational problems, and a deep understanding of the analysis of algorithms and the complexity of computational problems.
-The top 3 students in each offering are listed below.
+The top 3 students in each offering are listed below.</p>
 
-| Year | Top students |
-|:-----|:-------------|
-| 2023 | 1. Anders Mah<br>2. Redmond Mobbs<br>2. Zixu He |
-| 2022 | 1. Angus Ritossa<br>2. Charran Kethees<br>3. Jeffrey Yang<br>3. Sean Zammit|
-| 2020 | 1. Ian Dunkerley<br>1. Ethan Brown<br>3. Daniel Woolnough|
-| 2019 | 1. Madeleine Kyng<br>2. Louis Cheung<br>3. Andrew Ross|
-| 2018 | 1. Brittany Evat<br>2. Joshua Lau<br>3. Adrian Goldwaser|
-| 2017 | 1. David Coates<br>2. Suganya Suresh<br>3. Felix Abrahamsson|
-| 2016 | 1. Mohammad Huda<br>2. Andrew Semler<br>3. Michael Chen|
-| 2015 | 1. Ray Li<br>1. Oliver Fisher<br>3. Magnus Hagmar|
-| 2014 | 1. Mitchell Ward<br>2. Alexis Shaw<br>2. Ben Edser|
-
+<table>
+ <tr><th>Year</th><th>Top students</th></tr>
+ <tr><td>2023</td><td>1. Anders Mah<br>2. Redmond Mobbs<br>2. Zixu He</td></tr>
+ <tr><td>2022</td><td>1. Angus Ritossa<br>2. Charran Kethees<br>3. Jeffrey Yang<br>3. Sean Zammit</td></tr>
+ <tr><td>2020</td><td>1. Ian Dunkerley<br>1. Ethan Brown<br>3. Daniel Woolnough</td></tr>
+ <tr><td>2019</td><td>1. Madeleine Kyng<br>2. Louis Cheung<br>3. Andrew Ross</td></tr>
+ <tr><td>2018</td><td>1. Brittany Evat<br>2. Joshua Lau<br>3. Adrian Goldwaser</td></tr>
+ <tr><td>2017</td><td>1. David Coates<br>2. Suganya Suresh<br>3. Felix Abrahamsson</td></tr>
+ <tr><td>2016</td><td>1. Mohammad Huda<br>2. Andrew Semler<br>3. Michael Chen</td></tr>
+ <tr><td>2015</td><td>1. Ray Li<br>1. Oliver Fisher<br>3. Magnus Hagmar</td></tr>
+ <tr><td>2014</td><td>1. Mitchell Ward<br>2. Alexis Shaw<br>2. Ben Edser</td></tr>
+</table>
+</details>
