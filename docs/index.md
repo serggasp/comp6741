@@ -1,4 +1,4 @@
-Welcome to the course webpage for COMP6741!
+Welcome to the course webpage for UNSW's COMP6741!
 
 <details>
   <summary>Course description</summary>
@@ -90,9 +90,9 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 
 <details>
   <summary>Show</summary>
-<p>The course has attracted extremely smart and dedicated students over the years.
-The best performers have demonstrated exceptional problem-solving abilities, a mastery of advanced algorithmic techniques for challenging computational problems, and a deep understanding of the analysis of algorithms and the complexity of computational problems.
-The top 3 students in each offering are listed below.</p>
+<p>The course has attracted extremely smart and dedicated students over the years.</p>
+<p>The best performers have demonstrated exceptional problem-solving abilities, a mastery of advanced algorithmic techniques for challenging computational problems, and a deep understanding of the analysis of algorithms and the complexity of computational problems.</p>
+<p>The top 3 students in each offering are listed below.</p>
 
 <table>
  <tr><th>Year</th><th>Top students</th></tr>
