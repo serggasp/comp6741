@@ -15,10 +15,11 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 # News
 
 * 25 Jan 2024: The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
+* 29 Jan 2024: The course outline link has been updated to this term's edition. Main change: the assignment mark is composed only of the marks of 2 individual assignments and 1 group assignment.
 
 # Resources
 
-* [Course outline](https://webcms3.cse.unsw.edu.au/COMP6741/23T1/outline) gives details about assessments, schedule, staff, etc.
+* [Course outline](https://www.unsw.edu.au/course-outlines/course-outline#year=2024&term=Term%201&deliveryMode=Multimodal&deliveryFormat=Standard&teachingPeriod=T1&deliveryLocation=Kensington&courseCode=COMP6741&activityGroupId=1) gives details about assessments, schedule, staff, etc.
 * [Prerequisites](./prereq.pdf) gives an idea of what you should know before taking this course
 * [Lecture slides and notes](https://github.com/serggasp/comp6741/releases) form the main lecture material
 * [Lecture videos](https://youtube.com/playlist?list=PLYIsMYyPmqvv5Hmak1dvf2ZNHdnK3zFf9&feature=shared) present the lecture material
