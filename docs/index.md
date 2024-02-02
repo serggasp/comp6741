@@ -76,14 +76,22 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
     Lectures are pre-recorded.
     During the lecture time slots, we solve tutorial-style exercise sheets, review lecture material that is useful to solve these exercises, explore various approaches to solve (or fail to solve) the exercises, and answer questions about the lecture material.
 
-4. How is the course assessed?
+4. What are the student expectations?
+
+    Before each meeting (2 times per week), it is expected that you watch the associated pre-recorded lecture (if notations or terms are unclear, consult the glossary, find resources online that you can share with other students in the forum, and/or ask/answer questions in the forum) and that you attempt the associated exercise sheet (you may not be able to solve all exercises, but it is important to attempt them and think about them in depth, so as to pinpoint the difficulties).
+
+    During the meeting, we typically answer questions you may have about the lecture, discuss the exercise sheets and provide either hints or (partial) solutions, and clarify assignment questions. We may also discuss the solution to assignments that you submitted in previous weeks.
+
+    Assignments assume that you are up-to-date with all lectures and attempted all exercise sheets yourself.
+
+5. How is the course assessed?
 
     In 2024, there are 3 assignments and 1 final exam.
     The assignment mark is worth 50% of the overall mark, composed of two individual assignments (15% each) and one group assignment (20%).
     The final exam is worth 50% and is run on Inspera.
     Bonus marks are possible in case of exceptional performance.
     
-5. When can I take COMP6741?
+6. When can I take COMP6741?
 
     COMP6741 runs in 2024 term 1.
     In future years, it is planned that the course will run in term 1, but it might not be offered every year.
