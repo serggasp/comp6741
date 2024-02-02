@@ -14,6 +14,8 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 
 # News
 
+* 2 Feb 2024: The Moodle link has been updated. All links are now up-to-date for 2024T1.
+* 2 Feb 2024: A FAQ question on student expectations has been added.
 * 30 Jan 2024: The Monday lecture has been moved to a larger room: Matthews 310.
 * 29 Jan 2024: The course outline link has been updated to this term's edition. Main change: the assignment mark is composed only of the marks of 2 individual assignments and 1 group assignment.
 * 25 Jan 2024: The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
@@ -28,7 +30,7 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 
 ## for enroled students
 
-* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=73320) contains exercise sheets, assignments, and trial exam
+* [Moodle](https://moodle.telt.unsw.edu.au/course/view.php?id=81692) contains exercise sheets, assignments, marks, and trial exam
 * [Forum](https://edstem.org/au/join/N7xsp5) is used for announcements and questions and answers.
 
 ## recommended textbooks
