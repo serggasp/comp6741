@@ -60,8 +60,8 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 |    5 | Branching algorithms; measure & conquer |
 |    6 | - |
 |    7 | Randomized algorithms; treewidth |
-|    8 | Treewidth; quantum algorithms |
-|    9 | Exponential time hypothesis; heuristics and local search |
+|    8 | Treewidth; exponential time hypothesis |
+|    9 | Quantum algorithms; heuristics and local search |
 |   10 | Group assignment presentations; review |
 
 # Frequently Asked Questions
