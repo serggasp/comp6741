@@ -12,6 +12,7 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 <p>In addition to deterministic algorithms, we discuss speed-ups if we have access to randomised algorithms or quantum algorithms.</p>
 </details>
 
+<!-->
 # News
 
 * 2 Feb 2024: An MS Teams link has been added. All links should be up-to-date for 2024T1 now.
@@ -20,6 +21,7 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 * 30 Jan 2024: The Monday lecture has been moved to a larger room: Matthews 310.
 * 29 Jan 2024: The course outline link has been updated to this term's edition. Main change: the assignment mark is composed only of the marks of 2 individual assignments and 1 group assignment.
 * 25 Jan 2024: The forum (see below) is now active for 2024 Term 1. If you are enroled or plan to enrol in 2024T1, please join the forum.
+--->
 
 # Resources
 
@@ -97,8 +99,9 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
     
 6. When can I take COMP6741?
 
-    COMP6741 runs in 2024 term 1.
+    COMP6741 was offered in 2024 term 1.
     In future years, it is planned that the course will run in term 1, but it might not be offered every year.
+    It is not offered in 2025.
 
 # Hall of fame
 
@@ -110,6 +113,7 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 
 <table>
  <tr><th>Year</th><th>Top students</th></tr>
+ <tr><td>2024</td><td>1. Isaiah Iliffe<br>2. Qi Wang<br>3. Sankalpa Tripathee</td></tr>
  <tr><td>2023</td><td>1. Anders Mah<br>2. Redmond Mobbs<br>2. Zixu He</td></tr>
  <tr><td>2022</td><td>1. Angus Ritossa<br>2. Charran Kethees<br>3. Jeffrey Yang<br>3. Sean Zammit</td></tr>
  <tr><td>2020</td><td>1. Ian Dunkerley<br>1. Ethan Brown<br>3. Daniel Woolnough</td></tr>
