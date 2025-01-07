@@ -12,7 +12,7 @@ Among algorithms that do not provide optimal solutions, we discuss heuristics an
 <p>In addition to deterministic algorithms, we discuss speed-ups if we have access to randomised algorithms or quantum algorithms.</p>
 </details>
 
-<!-->
+<!--
 # News
 
 * 2 Feb 2024: An MS Teams link has been added. All links should be up-to-date for 2024T1 now.
